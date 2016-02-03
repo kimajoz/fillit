@@ -6,7 +6,7 @@
 #    By: pbillett <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/02/02 16:12:19 by pbillett          #+#    #+#              #
-#    Updated: 2016/02/02 17:39:53 by pbillett         ###   ########.fr        #
+#    Updated: 2016/02/03 16:34:58 by pbillett         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,9 +16,9 @@ SRC = main.c \
 		resolvesquare.c
 LIB = libft.a
 
-all: $(NAME)
+all:	$(NAME)
 
-$(NAME): $(SRC)
+$(NAME):	$(SRC)
 	gcc -Wall -Werror -Wextra -o $(NAME) $(SRC) $(LIB)
 
 clean:
