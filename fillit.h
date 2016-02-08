@@ -12,8 +12,9 @@
 
 #ifndef FILLIT_H
 # define FILLIT_H
-#include "libft.h"
+# include "libft.h"
 
 int		checkfile(char* filename);
+int		resolvessquare(char ***triominosArray);
 
 #endif

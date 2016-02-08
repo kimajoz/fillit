@@ -71,9 +71,12 @@ int			checkfile(char* filename)
 					comptdieze++;
 				if (buf[0] == '.')
 					comptpoint++;
+				car++;
 			}
 			else if (buf[0] == '\n' && (car == 1 || car == 5))
 			{
+				car++;
+				contentarray[blocknumb][ligne][car] = buf[0];
 				ligne++;
 				cartot = car + cartot;
 				car = 0;
@@ -83,7 +86,6 @@ int			checkfile(char* filename)
 				ft_putstr("error car");
 				return (0);
 			}
-			car++;
 		}
 		else
 		{
@@ -103,23 +105,27 @@ int			checkfile(char* filename)
 	// ON VERIFIE LE NOMBRE DE CATACTERES #:
 	while (i < blocknumb)
 	{
-		while (contentarray[i][j][k] != '\0')
+		while (j != '\0')
 		{
 			//ft_putchar(contentarray[i][j][k]);
-			if (contentarray[i][j][k] == '#')
-			{
-				if ((contentarray[i][j][k - 1] == '#') && (k >= 1 && k <= 3))
-					touchotherdieze++;
-				if ((contentarray[i][j][k + 1] == '#') && (k >= 0 && k <= 2))
-					touchotherdieze++;
-				if ((contentarray[i][j - 1][k] == '#') && (j >= 1 && j <= 3))
-					touchotherdieze++;
-				if ((contentarray[i][j + 1][k] == '#') && (j >= 0 && j <= 2))
-					touchotherdieze++;
 
-				comptdieze++;
+			while (k != '\n')
+			{
+				if (contentarray[i][j][k] == '#')
+				{
+					if ((contentarray[i][j][k - 1] == '#') && (k >= 1 && k <= 3))
+						touchotherdieze++;
+					if ((contentarray[i][j][k + 1] == '#') && (k >= 0 && k <= 2))
+						touchotherdieze++;
+					if ((contentarray[i][j - 1][k] == '#') && (j >= 1 && j <= 3))
+						touchotherdieze++;
+					if ((contentarray[i][j + 1][k] == '#') && (j >= 0 && j <= 2))
+						touchotherdieze++;
+				}
+				k++;
 			}
-			k++;
+			j++;
+			k = 0;
 		}
 		if (touchotherdieze != 6 && touchotherdieze != 8) //les carres des triominos se touche au moins 6 fois ou 8 pour le carre.
 		{
@@ -130,7 +136,10 @@ int			checkfile(char* filename)
 	}
 
 	if (checkcontent == 0)
+	{
 		ft_putstr("ok file open\n");
+		resolvesquare(contentarray);
+	}
 	else
 		ft_putstr("error\n");
 

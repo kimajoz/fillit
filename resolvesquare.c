@@ -12,8 +12,9 @@
 
 #include "fillit.h"
 
-int		resolvessquare()
+int		resolvessquare(char ***triominosArray)
 {
+	ft_putstr("resolvesquare");
 	//if () // not succeed
 	//	ft_putstr("error not resolvesquare");
 	return (0);
