@@ -15,35 +15,36 @@
 #include <unistd.h>
 
 #define BUF_SIZE 1
-#define BUF_FULL_SIZE 4096
 
 int			checkfile(char* filename)
 {
 	int fd;
-	int fd2;
 	int ret;
-	int ret2;
 	char buf[BUF_SIZE + 1];
-	char buf2[BUF_FULL_SIZE + 1];
-	int compt;
 	int checkcontent;
-	char **resultpatern;
-	char **contentarray;
+	char ***contentarray;
 	int i;
 	int j;
-	int comptblock;
+	int k;
 	int comptdieze;
+	int comptpoint;
 	int blocknumb;
+	int ligne;
+	int car;
+	int cartot;
+	int touchotherdieze;
 
+	ligne = 0;
+	car = 0;
 	i = 0;
 	j = 0;
-	resultpatern = NULL;
+	k = 0;
 	contentarray = NULL;
 	checkcontent = 0;
-	compt = 1;
-	comptblock = 0;
 	comptdieze = 0;
+	comptpoint = 0;
 	blocknumb = 0;
+	touchotherdieze = 0;
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
@@ -61,16 +62,40 @@ int			checkfile(char* filename)
 			checkcontent = 1;
 
 		// ON DECOUPE EN BLOC (tout les 21 caracteres)
-		if (comptblock <= 21)
+		if (cartot < 21)
 		{
-			// jenregistre le bloc courant dans mon tableau
-			contentarray[blocknumb][comptblock] = buf[0];
-			comptblock++;
+			if ((buf[0] == '#' || buf[0] == '.') && car <= 4)
+			{
+				contentarray[blocknumb][ligne][car] = buf[0];
+				if (buf[0] == '#')
+					comptdieze++;
+				if (buf[0] == '.')
+					comptpoint++;
+			}
+			else if (buf[0] == '\n' && (car == 1 || car == 5))
+			{
+				ligne++;
+				cartot = car + cartot;
+				car = 0;
+			}
+			else
+			{
+				ft_putstr("error car");
+				return (0);
+			}
+			car++;
 		}
 		else
 		{
-			// je remet le compteur a zero
-			comptblock = 0;
+			if (ligne != 5 || comptdieze != 4 || comptpoint == 12)
+			{
+				ft_putstr("error numb");
+				return (0);
+			}
+			// je remet les compteurs a zero
+			cartot = 0;
+			car = 0;
+			ligne = 0;
 			blocknumb++;
 		}
 	}
@@ -78,58 +103,28 @@ int			checkfile(char* filename)
 	// ON VERIFIE LE NOMBRE DE CATACTERES #:
 	while (i < blocknumb)
 	{
-		while (contentarray[i][j] != '\0')
+		while (contentarray[i][j][k] != '\0')
 		{
-			//ft_putchar(contentarray[i][j]);
-			if (contentarray[i][j] == '#')
+			//ft_putchar(contentarray[i][j][k]);
+			if (contentarray[i][j][k] == '#')
+			{
+				if ((contentarray[i][j][k - 1] == '#') && (k >= 1 && k <= 3))
+					touchotherdieze++;
+				if ((contentarray[i][j][k + 1] == '#') && (k >= 0 && k <= 2))
+					touchotherdieze++;
+				if ((contentarray[i][j - 1][k] == '#') && (j >= 1 && j <= 3))
+					touchotherdieze++;
+				if ((contentarray[i][j + 1][k] == '#') && (j >= 0 && j <= 2))
+					touchotherdieze++;
+
 				comptdieze++;
-			j++;
+			}
+			k++;
 		}
-		if (comptdieze != 4)
+		if (touchotherdieze != 6 && touchotherdieze != 8) //les carres des triominos se touche au moins 6 fois ou 8 pour le carre.
 		{
-			ft_putstr("error wrong number of #");
+			ft_putstr("error bad touch between #");
 			return (0);
-		}
-		i++;
-	}
-
-	// PAS DE LIGNE DE PLUS DE 4 CARACTERES
-	if (buf[0] == '\n')
-	{
-		if (compt != 5) // Si la ligne compte plus de 4 caracteres
-		{
-			if (compt != 1) // Si la ligne compte plus de 1 caracteres
-				checkcontent = 1;
-				//ft_putnbr(compt);
-				//ft_putstr("error\n");
-		}
-		compt = 0;
-	}
-	compt++;
-
-	// Check Special patern on all:
-	fd2 = open(filename, O_RDONLY);
-	ret2 = read(fd2, buf2, BUF_FULL_SIZE);
-	buf2[ret2] = '\0';
-	
-	// POUR AFFICHER LE CONTENU DU FICHIER (VIA LE BUFFER):
-	ft_putstr(buf2);
-
-	// PAS 2 LIGNES VIDES D'AFFILES
-	resultpatern[0] = ft_strstr(buf2, "\n\n\n"); // Trois lignes d'affiles (en comptant le saut de ligne)
-	
-	// IL Y A QUE DES ESPACES VIDES (POINTS)
-	
-	// IL Y A UN NOMBRE DIFFERENTS DE 4#
-
-	while (resultpatern != '\0')
-	{
-		if (resultpatern[i] == NULL || resultpatern[i] == buf2)
-			ft_putstr("patern not found\n");
-		else
-		{
-			ft_putstr("patern found !\n");
-			checkcontent = 1;
 		}
 		i++;
 	}
