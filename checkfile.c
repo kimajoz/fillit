@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 16:32:42 by pbillett          #+#    #+#             */
-/*   Updated: 2016/02/09 18:44:20 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/02/09 21:40:07 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,9 @@ int			checkfile(char* filename)
 		return (1);
 	}
 
-	/*
-	ft_putstr("cartot:");
-	ft_putnbr(cartot);
-	ft_putchar('\n');
-	*/
-	
-	ft_putstr("\nNew block:");
-	ft_putnbr(blocknumb);
-	ft_putchar('\n');
+	//ft_putstr("\nNew block:");
+	//ft_putnbr(blocknumb);
+	//ft_putchar('\n');
 
 	contentarray = malloc(blocknumb * sizeof(char **));
 
@@ -82,24 +76,17 @@ int			checkfile(char* filename)
 		// ON DECOUPE EN BLOC (tout les 20 caracteres + 1 de saut a la ligne)
 		if (cartot < 20)
 		{
-			//ft_putstr(buf);
-			//ft_putstr("inbetween");
-			//ft_putnbr(car);
-			//ft_putnbr(cartot);
-
 			if ((buf[0] == '#' || buf[0] == '.') && car < 4)
 			{
-				//ft_putstr("test");
-				//contentarray[blocknumb][ligne][car] = buf[0];
 				if (buf[0] == '#')
 				{
 					comptdieze++;
-					//ft_putstr("comptdieze");
 				}
+				if (comptdieze > 0 && comptdieze < 4)
+					contentarray[i] = buf[0];
 				if (buf[0] == '.')
 					comptpoint++;
 				car++;
-				//ft_putnbr(car);
 			}
 			else if (buf[0] == '\n' && car == 4)
 			{
@@ -108,18 +95,9 @@ int			checkfile(char* filename)
 				ligne++;
 				cartot = car + cartot;
 				car = 0;
-				//ft_putstr("cartot:");
-				//ft_putnbr(cartot);
-				//ft_putchar('\n');
 			}
 			else
 			{
-				ft_putstr("error car\n");
-				ft_putstr("cartot:\n");
-				ft_putnbr(cartot);
-				ft_putnbr(car);
-				ft_putstr(buf);
-				ft_putchar('\n');
 				return (0);
 			}
 		}
@@ -129,15 +107,10 @@ int			checkfile(char* filename)
 			{
 				if (ligne != 4 || comptdieze != 4 || comptpoint != 12)
 				{
-					ft_putstr("error numb:\n");
-					ft_putnbr(ligne);
-					ft_putchar('\n');
-					ft_putnbr(comptdieze);
-					ft_putchar('\n');
-					ft_putnbr(comptpoint);
-					ft_putchar('\n');
 					return (0);
 				}
+				// je sauve mon block
+				my_paterns[blocknumb] = check_patern(contentarray);
 				// je remet les compteurs a zero
 				cartot = 0;
 				car = 0;
@@ -145,9 +118,9 @@ int			checkfile(char* filename)
 				comptdieze = 0;
 				comptpoint = 0;
 				blocknumb++;
-				ft_putstr("\nNew block:");
-				ft_putnbr(blocknumb);
-				ft_putchar('\n');
+				//ft_putstr("\nNew block:");
+				//ft_putnbr(blocknumb);
+				//ft_putchar('\n');
 			}
 			else
 			{
@@ -156,6 +129,21 @@ int			checkfile(char* filename)
 			}
 		}
 	}
+
+	if (checkcontent == 0)
+	{
+		ft_putstr("ok file open\n");
+		//resolvesquare(my_paterns);
+	}
+	else
+		ft_putstr("error\n");
+
+	if (close(fd))
+	{
+		ft_putstr("close() failed\n");
+	}
+	return (0);
+}
 
 	/*
 	// ON VERIFIE LE NOMBRE DE CATACTERES # QUI SE TOUCHENT:
@@ -191,18 +179,3 @@ int			checkfile(char* filename)
 		i++;
 	}
 	*/
-
-	if (checkcontent == 0)
-	{
-		ft_putstr("ok file open\n");
-		//resolvesquare(contentarray);
-	}
-	else
-		ft_putstr("error\n");
-
-	if (close(fd))
-	{
-		ft_putstr("close() failed\n");
-	}
-	return (0);
-}
