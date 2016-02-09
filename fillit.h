@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 17:36:44 by pbillett          #+#    #+#             */
-/*   Updated: 2016/02/02 18:11:46 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/02/09 17:41:05 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,6 @@
 # include "libft.h"
 
 int		checkfile(char* filename);
-int		resolvessquare(char ***triominosArray);
+int		resolvesquare(char ***triominosArray);
 
 #endif
