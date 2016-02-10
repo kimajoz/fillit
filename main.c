@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 15:54:00 by pbillett          #+#    #+#             */
-/*   Updated: 2016/02/02 19:13:46 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/02/10 12:08:46 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,11 @@ int		main(int argc, char **argv)
 {
 	if (argc == 2)
 	{
-		checkfile(argv[1]);
+		if (checkfile(openfile(argv[1])) == 0)
+		{
+			ft_putstr("error du main\n");
+			return (0);
+		}
 	}
 	else
 		ft_putstr("usage: ./fillit input_file\n");

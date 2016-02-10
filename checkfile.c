@@ -6,176 +6,157 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 16:32:42 by pbillett          #+#    #+#             */
-/*   Updated: 2016/02/09 21:40:07 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/02/10 19:21:19 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdlib.h>
 
-#define BUF_SIZE 1
-
-int			checkfile(char* filename)
+int		filter_file(char *my_block)
 {
-	int fd;
-	int ret;
-	char buf[BUF_SIZE + 1];
-	int checkcontent;
-	char ***contentarray;
-	int i;
-	int j;
-	int k;
 	int comptdieze;
 	int comptpoint;
-	int blocknumb;
 	int ligne;
 	int car;
 	int cartot;
-	int touchotherdieze;
+	int i;
 
+	i = 0;
 	ligne = 0;
 	car = 0;
-	i = 0;
-	j = 0;
-	k = 0;
-	checkcontent = 0;
 	comptdieze = 0;
 	comptpoint = 0;
-	blocknumb = 0;
-	touchotherdieze = 0;
 	cartot = 0;
-	fd = open(filename, O_RDONLY);
-	if (fd == -1)
-	{
-		ft_putstr("open failed\n");
-		return (1);
-	}
 
-	//ft_putstr("\nNew block:");
-	//ft_putnbr(blocknumb);
-	//ft_putchar('\n');
+	// PAS DE CARACTERE DIFFERENTS DE \n . et #
+	if (my_block[i] != '\n' && my_block[i] != '.' && my_block[i] != '#')
+		return(1);
 
-	contentarray = malloc(blocknumb * sizeof(char **));
-
-	if (contentarray == NULL)
-		return(0);
-
-	// Check Number on line and characters by line:
-	while ((ret = read(fd, buf, BUF_SIZE)))
-	{
-		buf[ret] = '\0';
-
-		// PAS DE CARACTERE DIFFERENTS DE \n . et #
-		if (buf[0] != '\n' && buf[0] != '.' && buf[0] != '#')
-			checkcontent = 1;
-
-		ft_putstr(buf);
-
-		// ON DECOUPE EN BLOC (tout les 20 caracteres + 1 de saut a la ligne)
-		if (cartot < 20)
+	if ((my_block[i] == '#' || my_block[i] == '.') && car < 4)
 		{
-			if ((buf[0] == '#' || buf[0] == '.') && car < 4)
-			{
-				if (buf[0] == '#')
-				{
-					comptdieze++;
-				}
-				if (comptdieze > 0 && comptdieze < 4)
-					contentarray[i] = buf[0];
-				if (buf[0] == '.')
-					comptpoint++;
-				car++;
-			}
-			else if (buf[0] == '\n' && car == 4)
-			{
-				car++;
-				//contentarray[blocknumb][ligne][car] = buf[0];
-				ligne++;
-				cartot = car + cartot;
-				car = 0;
-			}
-			else
-			{
+			if (my_block[i] == '#')
+				comptdieze++;
+			if (my_block[i] == '.')
+				comptpoint++;
+			car++;
+		}
+		else if (my_block[i] == '\n' && car == 4)
+		{
+			car++;
+			ligne++;
+			cartot = car + cartot;
+			car = 0;
+		}
+		else if (my_block[i] == '\n' && car == 0)
+		{
+			if (ligne != 4 || comptdieze != 4 || comptpoint != 12)
 				return (0);
-			}
+			// je remet les compteurs a zero
+			cartot = 0;
+			car = 0;
+			ligne = 0;
+			comptdieze = 0;
+			comptpoint = 0;
 		}
 		else
-		{
-			if (buf[0] == '\n' && car == 0)
-			{
-				if (ligne != 4 || comptdieze != 4 || comptpoint != 12)
-				{
-					return (0);
-				}
-				// je sauve mon block
-				my_paterns[blocknumb] = check_patern(contentarray);
-				// je remet les compteurs a zero
-				cartot = 0;
-				car = 0;
-				ligne = 0;
-				comptdieze = 0;
-				comptpoint = 0;
-				blocknumb++;
-				//ft_putstr("\nNew block:");
-				//ft_putnbr(blocknumb);
-				//ft_putchar('\n');
-			}
-			else
-			{
-				//wrong number of inbetween line
-				ft_putstr("error wrong number of inbetween line");
-			}
-		}
-	}
-
-	if (checkcontent == 0)
-	{
-		ft_putstr("ok file open\n");
-		//resolvesquare(my_paterns);
-	}
-	else
-		ft_putstr("error\n");
-
-	if (close(fd))
-	{
-		ft_putstr("close() failed\n");
-	}
+			ft_putstr("error wrong number of inbetween line");
 	return (0);
 }
 
-	/*
-	// ON VERIFIE LE NOMBRE DE CATACTERES # QUI SE TOUCHENT:
-	while (i < blocknumb)
-	{
-		while (j != '\0')
-		{
-			//ft_putchar(contentarray[i][j][k]);
+int		checktouch(char *block)
+{
+	int i;
+	int touchotherdieze;
 
-			while (k != '\n')
-			{
-				if (contentarray[i][j][k] == '#')
-				{
-					if ((contentarray[i][j][k - 1] == '#') && (k >= 1 && k <= 3))
-						touchotherdieze++;
-					if ((contentarray[i][j][k + 1] == '#') && (k >= 0 && k <= 2))
-						touchotherdieze++;
-					if ((contentarray[i][j - 1][k] == '#') && (j >= 1 && j <= 3))
-						touchotherdieze++;
-					if ((contentarray[i][j + 1][k] == '#') && (j >= 0 && j <= 2))
-						touchotherdieze++;
-				}
-				k++;
-			}
-			j++;
-			k = 0;
-		}
-		if (touchotherdieze != 6 && touchotherdieze != 8) //les carres des triominos se touche au moins 6 fois ou 8 pour le carre.
+	i = 0;
+	touchotherdieze = 0;
+
+	// ON VERIFIE LE NOMBRE DE CATACTERES # QUI SE TOUCHENT:
+	while (block[i] != '\0')
+	{
+		if (block[i] == '#')
 		{
-			ft_putstr("error bad touch between #");
-			return (0);
+			if ((block[i - 1] == '#') && (i > 0 && i < 19))
+				touchotherdieze++;
+			if ((block[i + 1] == '#') && (i < 19))
+				touchotherdieze++;
+			if ((block[i - 5] == '#') && (i > 5))
+				touchotherdieze++;
+			if ((block[i + 5] == '#') && (i < 15))
+				touchotherdieze++;
 		}
 		i++;
 	}
-	*/
+	if (touchotherdieze != 6 && touchotherdieze != 8) //les carres des triominos se touche au moins 6 fois ou 8 pour le carre.
+	{
+		ft_putstr("error bad touch between #");
+		return (0);
+	}
+	return(1);
+}
+
+int			checkfile(char* filecontent)
+{
+	int checkcontent;
+	int i;
+	int a;
+	int n;
+	int blocknumb;
+	char **all_block;
+
+	i = 0;
+	a = 0;
+	n = 0;
+	checkcontent = 0;
+	blocknumb = 0;
+
+	// Je compte le nombre de blocs:
+	while (filecontent[i] != '\0')
+	{
+		if (filecontent[i] == '\n' && filecontent[i - 1] == '\n')
+			blocknumb++;
+		i++;
+	}
+
+	// Je fais mes mallocs:
+	i = 0;
+	all_block = malloc(blocknumb * sizeof(char*));
+	while (i < blocknumb)
+	{
+		all_block[i] = malloc(21);
+		i++;
+	}
+
+	// J'enregistre chaque bloc dans un tableau:
+	i = 0;
+	while (filecontent[i] != '\0')
+	{
+		ft_putchar(filecontent[i]);
+		all_block[n][a] = filecontent[i];
+		if (a < 21)
+			a++;
+		else
+		{
+			if (filecontent[i] == '\n' && filecontent[i - 1] == '\n')
+				n++;
+			a = 0;
+		}
+		i++;
+	}
+
+	// Je filtre mon tableau
+	while (i < blocknumb)
+		filter_file(all_block[n]);
+
+	// Je retourne les erreurs ou je termine ma fonction
+	if (checkcontent == 0)
+	{
+		ft_putstr("ok file open\n");
+		resolvesquare(all_block);
+	}
+	else
+		ft_putstr("error\n");
+	
+	return (0);
+}
+

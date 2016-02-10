@@ -6,26 +6,35 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 17:44:57 by pbillett          #+#    #+#             */
-/*   Updated: 2016/02/09 20:07:38 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/02/10 19:21:16 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-int		resolvesquare(char *my_paterns)
+int		resolvesquare(char **filecontent)
 {
+	int n;
 	int i;
 	ft_putstr("resolvesquare");
 
-	i= 0;
-	
-	/*
-	while (triominosArray[i] != '\0')
+	n = 0;
+	i = 0;
+
+	while (filecontent[n] != '\0')
 	{
-		ft_putnbr(i);
-		i++;
+		/*
+		while (filecontent[n][i] != '\0')
+		{
+			//ft_putchar(filecontent[n][i]);
+			i++;
+		}
+		*/
+		ft_putnbr(n);
+		ft_putchar('\n');
+		n++;
 	}
-	*/
+
 	//if () // not succeed
 	//	ft_putstr("error not resolvesquare");
 	return (0);
