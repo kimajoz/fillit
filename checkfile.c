@@ -33,33 +33,36 @@ int		filter_file(char *my_block)
 		return(1);
 
 	if ((my_block[i] == '#' || my_block[i] == '.') && car < 4)
-		{
-			if (my_block[i] == '#')
-				comptdieze++;
-			if (my_block[i] == '.')
-				comptpoint++;
-			car++;
-		}
-		else if (my_block[i] == '\n' && car == 4)
-		{
-			car++;
-			ligne++;
-			cartot = car + cartot;
-			car = 0;
-		}
-		else if (my_block[i] == '\n' && car == 0)
-		{
-			if (ligne != 4 || comptdieze != 4 || comptpoint != 12)
-				return (0);
-			// je remet les compteurs a zero
-			cartot = 0;
-			car = 0;
-			ligne = 0;
-			comptdieze = 0;
-			comptpoint = 0;
-		}
-		else
-			ft_putstr("error wrong number of inbetween line");
+	{
+		if (my_block[i] == '#')
+			comptdieze++;
+		if (my_block[i] == '.')
+			comptpoint++;
+		car++;
+	}
+	else if (my_block[i] == '\n' && car == 4)
+	{
+		car++;
+		ligne++;
+		cartot = car + cartot;
+		car = 0;
+	}
+	else if (my_block[i] == '\n' && car == 0)
+	{
+		if (ligne != 4 || comptdieze != 4 || comptpoint != 12)
+			return (0);
+		// je remet les compteurs a zero
+		cartot = 0;
+		car = 0;
+		ligne = 0;
+		comptdieze = 0;
+		comptpoint = 0;
+	}
+	else
+	{
+		ft_putstr("error wrong number of inbetween line");
+		return(1);
+	}
 	return (0);
 }
 
@@ -110,6 +113,9 @@ int			checkfile(char* filecontent)
 	checkcontent = 0;
 	blocknumb = 0;
 
+	// Je filtre mon tableau
+	filter_file(filecontent);
+
 	// Je compte le nombre de blocs:
 	while (filecontent[i] != '\0')
 	{
@@ -144,9 +150,13 @@ int			checkfile(char* filecontent)
 		i++;
 	}
 
-	// Je filtre mon tableau
-	while (i < blocknumb)
-		filter_file(all_block[n]);
+	// Je verifie que les blocks de tetriminos se touchent 
+	n = 0;
+	while (n < blocknumb)
+	{
+		checktouch(all_block[n]);
+		n++;
+	}
 
 	// Je retourne les erreurs ou je termine ma fonction
 	if (checkcontent == 0)
