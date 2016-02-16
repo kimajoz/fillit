@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 16:32:42 by pbillett          #+#    #+#             */
-/*   Updated: 2016/02/10 19:21:19 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/02/16 14:30:37 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int		filter_file(char *my_block)
 	else if (my_block[i] == '\n' && car == 0)
 	{
 		if (ligne != 4 || comptdieze != 4 || comptpoint != 12)
-			return (0);
+			return (1);
 		// je remet les compteurs a zero
 		cartot = 0;
 		car = 0;
@@ -61,7 +61,7 @@ int		filter_file(char *my_block)
 	else
 	{
 		ft_putstr("error wrong number of inbetween line");
-		return(1);
+		return (1);
 	}
 	return (0);
 }
@@ -77,6 +77,8 @@ int		checktouch(char *block)
 	// ON VERIFIE LE NOMBRE DE CATACTERES # QUI SE TOUCHENT:
 	while (block[i] != '\0')
 	{
+		//ft_putchar(block[i]);
+		//ft_putnbr(touchotherdieze);
 		if (block[i] == '#')
 		{
 			if ((block[i - 1] == '#') && (i > 0 && i < 19))
@@ -92,10 +94,11 @@ int		checktouch(char *block)
 	}
 	if (touchotherdieze != 6 && touchotherdieze != 8) //les carres des triominos se touche au moins 6 fois ou 8 pour le carre.
 	{
-		ft_putstr("error bad touch between #");
-		return (0);
+		ft_putstr("error bad touch between #\n");
+		ft_putnbr(touchotherdieze);
+		return (1);
 	}
-	return(1);
+	return(0);
 }
 
 int			checkfile(char* filecontent)
@@ -113,13 +116,17 @@ int			checkfile(char* filecontent)
 	checkcontent = 0;
 	blocknumb = 0;
 
-	// Je filtre mon tableau
-	filter_file(filecontent);
+	// Je filtre mon fichier
+	if (filter_file(filecontent) != 0)
+	{
+		ft_putstr("Bad filter_file");
+		return (1);
+	}
 
 	// Je compte le nombre de blocs:
 	while (filecontent[i] != '\0')
 	{
-		if (filecontent[i] == '\n' && filecontent[i - 1] == '\n')
+		if ((filecontent[i] == '\n') && (filecontent[i + 1] == '\n' || filecontent[i + 1] == '\0')) // Attention d'etre logiaue et propre pour calculer le nombre de bloc !!! Un nbr de bloc mauvais peut forcement rendre tout le reste des scripts mauvais.
 			blocknumb++;
 		i++;
 	}
@@ -127,9 +134,13 @@ int			checkfile(char* filecontent)
 	// Je fais mes mallocs:
 	i = 0;
 	all_block = malloc(blocknumb * sizeof(char*));
-	while (i < blocknumb)
+	if (all_block == NULL)
+		return (1);
+	while (i <= blocknumb)
 	{
 		all_block[i] = malloc(21);
+		if (all_block[i] == NULL)
+			return (1);
 		i++;
 	}
 
@@ -137,14 +148,21 @@ int			checkfile(char* filecontent)
 	i = 0;
 	while (filecontent[i] != '\0')
 	{
-		ft_putchar(filecontent[i]);
+		//ft_putnbr(a);
+		//ft_putnbr(i);
+		//ft_putchar(filecontent[i]);
 		all_block[n][a] = filecontent[i];
-		if (a < 21)
+		if (a < 20)
+		{
 			a++;
+		}
 		else
 		{
-			if (filecontent[i] == '\n' && filecontent[i - 1] == '\n')
+			if ((filecontent[i] == '\n' && filecontent[i - 1] == '\n'))
+			{
 				n++;
+				//ft_putstr("\n");
+			}
 			a = 0;
 		}
 		i++;
@@ -154,19 +172,10 @@ int			checkfile(char* filecontent)
 	n = 0;
 	while (n < blocknumb)
 	{
-		checktouch(all_block[n]);
+		if (checktouch(all_block[n]) != 0)
+			return (1);
 		n++;
 	}
-
-	// Je retourne les erreurs ou je termine ma fonction
-	if (checkcontent == 0)
-	{
-		ft_putstr("ok file open\n");
-		resolvesquare(all_block);
-	}
-	else
-		ft_putstr("error\n");
-	
 	return (0);
 }
 
