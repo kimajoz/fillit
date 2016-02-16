@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 17:36:44 by pbillett          #+#    #+#             */
-/*   Updated: 2016/02/10 17:59:35 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/02/16 15:13:52 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define BUF_SIZE 527
 
 char	*openfile(char* filename);
-int		checkfile(char* filecontent);
+char	**checkfile(char* filecontent);
 int		resolvesquare(char **filecontent);
 
 #endif

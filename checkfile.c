@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 16:32:42 by pbillett          #+#    #+#             */
-/*   Updated: 2016/02/16 14:30:37 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/02/16 18:32:23 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,24 @@ int		checktouch(char *block)
 	return(0);
 }
 
-int			checkfile(char* filecontent)
+int		ft_blocknumb(char *filecontent)
+{
+	int blocknumb;
+	int i;
+
+	i = 0;
+	blocknumb = 0;
+	// Je compte le nombre de blocs:
+	while (filecontent[i] != '\0')
+	{
+		if ((filecontent[i] == '\n') && (filecontent[i + 1] == '\n' || filecontent[i + 1] == '\0')) // Attention d'etre logiaue et propre pour calculer le nombre de bloc !!! Un nbr de bloc mauvais peut forcement rendre tout le reste des scripts mauvais.
+			blocknumb++;
+		i++;
+	}
+	return (blocknumb);
+}
+
+char	**checkfile(char* filecontent)
 {
 	int checkcontent;
 	int i;
@@ -120,27 +137,22 @@ int			checkfile(char* filecontent)
 	if (filter_file(filecontent) != 0)
 	{
 		ft_putstr("Bad filter_file");
-		return (1);
+		return (NULL);
 	}
 
 	// Je compte le nombre de blocs:
-	while (filecontent[i] != '\0')
-	{
-		if ((filecontent[i] == '\n') && (filecontent[i + 1] == '\n' || filecontent[i + 1] == '\0')) // Attention d'etre logiaue et propre pour calculer le nombre de bloc !!! Un nbr de bloc mauvais peut forcement rendre tout le reste des scripts mauvais.
-			blocknumb++;
-		i++;
-	}
+	blocknumb = ft_blocknumb(filecontent);
 
 	// Je fais mes mallocs:
 	i = 0;
-	all_block = malloc(blocknumb * sizeof(char*));
+	all_block = (char **)malloc(blocknumb * sizeof(char*));
 	if (all_block == NULL)
-		return (1);
+		return (NULL);
 	while (i <= blocknumb)
 	{
 		all_block[i] = malloc(21);
 		if (all_block[i] == NULL)
-			return (1);
+			return (NULL);
 		i++;
 	}
 
@@ -148,21 +160,13 @@ int			checkfile(char* filecontent)
 	i = 0;
 	while (filecontent[i] != '\0')
 	{
-		//ft_putnbr(a);
-		//ft_putnbr(i);
-		//ft_putchar(filecontent[i]);
 		all_block[n][a] = filecontent[i];
 		if (a < 20)
-		{
 			a++;
-		}
 		else
 		{
 			if ((filecontent[i] == '\n' && filecontent[i - 1] == '\n'))
-			{
 				n++;
-				//ft_putstr("\n");
-			}
 			a = 0;
 		}
 		i++;
@@ -173,9 +177,8 @@ int			checkfile(char* filecontent)
 	while (n < blocknumb)
 	{
 		if (checktouch(all_block[n]) != 0)
-			return (1);
+			return (NULL);
 		n++;
 	}
-	return (0);
+	return (all_block);
 }
-
