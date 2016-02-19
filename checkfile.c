@@ -118,20 +118,16 @@ int		ft_blocknumb(char *filecontent)
 	return (blocknumb);
 }
 
-char	**checkfile(char* filecontent)
+char	**checkfile(char *filecontent, int *blocknumb)
 {
-	int checkcontent;
 	int i;
 	int a;
 	int n;
-	int blocknumb;
 	char **all_block;
 
 	i = 0;
 	a = 0;
 	n = 0;
-	checkcontent = 0;
-	blocknumb = 0;
 
 	// Je filtre mon fichier
 	if (filter_file(filecontent) != 0)
@@ -141,14 +137,14 @@ char	**checkfile(char* filecontent)
 	}
 
 	// Je compte le nombre de blocs:
-	blocknumb = ft_blocknumb(filecontent);
+	blocknumb = (int *)ft_blocknumb(filecontent);
 
 	// Je fais mes mallocs:
 	i = 0;
-	all_block = (char **)malloc(blocknumb * sizeof(char*));
+	all_block = (char **)malloc((int)blocknumb * sizeof(char*));
 	if (all_block == NULL)
 		return (NULL);
-	while (i <= blocknumb)
+	while (i <= (int)blocknumb)
 	{
 		all_block[i] = malloc(21);
 		if (all_block[i] == NULL)
@@ -174,7 +170,7 @@ char	**checkfile(char* filecontent)
 
 	// Je verifie que les blocks de tetriminos se touchent 
 	n = 0;
-	while (n < blocknumb)
+	while (n < (int)blocknumb)
 	{
 		if (checktouch(all_block[n]) != 0)
 			return (NULL);

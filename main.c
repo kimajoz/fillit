@@ -14,18 +14,21 @@
 
 int		main(int argc, char **argv)
 {
+	int *blocknumb;
 	char **tab_tot;
+	int mapsize;
+	mapsize = 2;
 
+	blocknumb = 0;
 	if (argc == 2)
 	{
 		// Si le fichier est verifie, je le resous
-		tab_tot = checkfile(openfile(argv[1]));
+		tab_tot = checkfile(openfile(argv[1]), (int *)*blocknumb);
 		if (tab_tot != NULL)
 		{
 			ft_putstr("ok file open\n");
-			//resolvesquare(tab_tot, numpiece);
-			resolvesquare(tab_tot);
-			//ft_tabdel(tab_tot); // Utiliser plutot une fonction aui free tout recursivement
+			resolvesquare(tab_tot, (int)blocknumb, mapsize);
+			ft_tabdel(tab_tot, (int)blocknumb); // Utiliser plutot une fonction aui free tout recursivement
 		}
 		else
 			ft_putstr("error\n");

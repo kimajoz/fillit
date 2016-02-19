@@ -20,7 +20,7 @@
 # define BUF_SIZE 527
 
 char	*openfile(char* filename);
-char	**checkfile(char* filecontent);
-int		resolvesquare(char **filecontent);
+char	**checkfile(char* filecontent, int *blocknumb);
+int		resolvesquare(char **filecontent, int blocknumb, int mapsize);
 
 #endif
