@@ -49,7 +49,7 @@ int		ft_checkmap(int x, int y, char **map)
 	return (0);
 }
 
-char	**ft_addblock(char *piece, char **map)
+char	**ft_addblock(char *piece, char ***map, int numeropiece)
 {
 	int i;
 	int j;
@@ -61,28 +61,28 @@ char	**ft_addblock(char *piece, char **map)
 	j = 0;
 	m = 0;
 
-	x = piece[m];
-	y = piece[m++];
+	y = piece[m];
+	x = piece[m++];
 	m++; //pour sauter la virgule
-	while (map[i])
+	while (map[j])
 	{
-		while (map[i][j] != '\0')
+		while (map[j][i] != '\0')
 		{
-			if (i == x && j == y)
+			if (j == y && i == x)
 			{
-				((char **)map)[i][j] = '#'; // On marque le caractere dize dans la map
-				x = piece[m++];
+				((char **)map)[i][j] = 'A' + numeropiece; // On marque le caractere dize dans la map
 				y = piece[m++];
+				x = piece[m++];
 				m++; //pour sauter la virgule
 			}
-			j++;
+			i++;
 		}
-		i++;
+		j++;
 	}
 	return ((char **)**map);
 }
 
-int		ft_checkaddblock(char *curblock, char ***map)
+int		ft_checkaddblock(char *curblock, char ***map, int numeropiece)
 {
 	int i;
 	int x;
@@ -118,19 +118,17 @@ int		ft_checkaddblock(char *curblock, char ***map)
 		i++;
 	}
 	// On ajoute réellement la piece dans la map.
-	map = (char ***)ft_addblock(piece, (char **)**map);
+	map = (char ***)ft_addblock(piece, (char ***)**map, numeropiece);
 	return(***map); // Si toutes les pieces rentrent bien dans la map, j'insere la piece, et je sors
 }
 
 int		resolvesquare(char **filecontent, int blocknumb, int mapsize)
 {
 	int n;
-	int i;
 	char ***map;
 
 	ft_putstr("resolvesquare");
-	n = 0;
-	i = 0;
+	n = 0
 	mapsize++;
 
 	map = (char ***)ft_createmap(mapsize);
@@ -145,7 +143,7 @@ int		resolvesquare(char **filecontent, int blocknumb, int mapsize)
 		ft_putnbr(n);
 		ft_putstr(filecontent[n]);
 		ft_putchar('\n');
-		if (ft_checkaddblock(filecontent[n], (char ***)**map) != 0)
+		if (ft_checkaddblock(filecontent[n], (char ***)**map, n) != 0)
 		{
 			// La piece a été inseré, on passe à celle d'après
 			n++;
@@ -157,6 +155,8 @@ int		resolvesquare(char **filecontent, int blocknumb, int mapsize)
 			
 			// Ou si au bout de la map, Agrandir la taille de la map
 			// On re-resous le plus petit carré mais en aggrandissant la map
+			mapsize++;
+			map = (char ***)ft_createmap(mapsize);
 			resolvesquare(filecontent, blocknumb, mapsize);
 		}
 	}

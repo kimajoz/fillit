@@ -28,7 +28,7 @@ int		main(int argc, char **argv)
 		{
 			ft_putstr("ok file open\n");
 			resolvesquare(tab_tot, (int)blocknumb, mapsize);
-			ft_tabdel(tab_tot, (int)blocknumb); // Utiliser plutot une fonction aui free tout recursivement
+			//ft_tabdel(tab_tot, (int)blocknumb); // Utiliser plutot une fonction aui free tout recursivement
 		}
 		else
 			ft_putstr("error\n");
