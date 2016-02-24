@@ -6,17 +6,18 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 17:44:57 by pbillett          #+#    #+#             */
-/*   Updated: 2016/02/16 18:43:11 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/02/24 20:49:24 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-char	**ft_createmap(int mapsize)
+static char	**ft_createmap(int mapsize)
 {
 	int x;
 	char **map;
 
+	x = 0;
 	map = (char **)malloc(mapsize * sizeof(char *));
 	while (x < mapsize)
 	{
@@ -26,19 +27,20 @@ char	**ft_createmap(int mapsize)
 	return(map);
 }
 
-int		ft_checkmap(int x, int y, char **map)
+static int		ft_checkmap(int x, int y, char **map)
 {
 	int i;
 	int j;
 
 	i = 0;
 	j = 0;
+	//ft_putstr("start check_map");
 
 	while (map[j])
 	{
 		while (map[j][i] != '\0')
 		{
-			if ((i == x && j == y) && ((char **)map)[j][i] == '#')
+			if ((i == x && j == y) && (map[j][i] == '#'))
 				return (1);
 			else
 				return (0);
@@ -49,7 +51,7 @@ int		ft_checkmap(int x, int y, char **map)
 	return (0);
 }
 
-int		ft_showmap(char **map)
+static int		ft_showmap(char **map)
 {
 	int i;
 	int j;
@@ -69,10 +71,8 @@ int		ft_showmap(char **map)
 	}
 	return (0);
 }
-
-
-
-char	**ft_addblock(char *piece, char ***map, int numeropiece)
+/*
+static char	**ft_addblock(int *piece, char ***map, int numeropiece)
 {
 	int i;
 	int j;
@@ -87,13 +87,13 @@ char	**ft_addblock(char *piece, char ***map, int numeropiece)
 	y = piece[m];
 	x = piece[m++];
 	m++; //pour sauter la virgule
-	while (map[j])
+	while ((*map)[j])
 	{
-		while (map[j][i] != '\0')
+		while ((*map)[j][i] != '\0')
 		{
 			if (j == y && i == x)
 			{
-				((char **)map)[i][j] = 'A' + numeropiece; // On marque le caractere dize dans la map
+				(*map)[i][j] = 'A' + numeropiece; // On marque le caractere dize dans la map
 				y = piece[m++];
 				x = piece[m++];
 				m++; //pour sauter la virgule
@@ -102,82 +102,91 @@ char	**ft_addblock(char *piece, char ***map, int numeropiece)
 		}
 		j++;
 	}
-	return ((char **)**map);
+	return (*map);
 }
-
-int		ft_checkaddblock(char *curblock, char ***map, int numeropiece, int mapsize, int offset)
+*/
+static int		ft_checkaddblock(char *curblock, char ***map, int numeropiece, int mapsize, int offset)
 {
 	int i;
 	int y;
 	int x;
 	int m;
-	char *piece;
+	int *piece;
 
 	i = 0;
 	y = 0;
 	x = 0;
 	m = 0;
 
-	piece = malloc(12);// Malloc pour les 4 diezes (xy,xy,xy,xy,)
+	piece = malloc(8 * sizeof(int));// Malloc pour les 4 diezes (xy,xy,xy,xy,)
 	while (curblock[i] != '\0')
 	{
 		if (curblock[i] == '#')
 		{
 			// On recupere sa position en x et y (on la deduit)
-			y = (curblock[i] / 5); //Soit 1 ligne (et pas ligne 0)
-			x = (curblock[i] % 5); //Soit 2 (soit 3 pieces) pour une piece situé en case 8 
-
-			y = y + (offset / 5);
-			x = x + (offset % 5);
+			y = ((i + offset) / 5); //Soit 1 ligne (et pas ligne 0)
+			//ft_putnbr(y);
+			x = ((i + offset) % 5); //Soit 2 (soit 3 pieces) pour une piece situé en case 8 
+			//ft_putnbr(x);
 
 			 // On verifie que sa position x y n'est pas en dehors de la map, sinon on dit que la map est trop petite.
 			if (x  > mapsize || y > mapsize)
-				return (1);
+				return (1); // La map est trop petite
 
 			// Si la map est assez grande,
 			// on test si sa place est déjà occuppé dans la map
-			if (ft_checkmap(x, y, (char **)**map) == 1)				
+			if ((ft_checkmap(x, y, *map)) == 1)
 				return (0);
+			//ft_putstr("midend ft_checkaddblock\n");
 			else // Sinon je la stocke dans un tableau pour l'inserer +tard
 			{
 				piece[m++] = y;
-				piece[m++] = ',';
 				piece[m++] = x;
-				piece[m++] = ',';
 			}
 		}
 		i++;
 	}
+
+	//ft_putstr("fin ft_checkaddblock\n");
 	// On ajoute réellement la piece dans la map.
-	map = (char ***)ft_addblock(piece, (char ***)**map, numeropiece);
-	return(***map); // Si toutes les pieces rentrent bien dans la map, j'insere la piece, et je sors
+	ft_putnbr(numeropiece);
+	ft_putstr(" piece : ");
+	ft_putlstnbr(piece, 8);
+	ft_putstr("\n");
+	//*map = ft_addblock(piece, map, numeropiece);
+	return(2); // Si toutes les pieces rentrent bien dans la map, j'insere la piece, et je sors
+	//return(*map); // Si toutes les pieces rentrent bien dans la map, j'insere la piece, et je sors
 }
 
 int		resolvesquare(char **filecontent, int blocknumb, int mapsize)
 {
 	int n;
-	char ***map;
+	char **map;
 	int offset;
 
-	ft_putstr("resolvesquare");
+	ft_putstr("resolvesquare\n");
 	n = 0;
 	offset = 0;
 	mapsize++;
-	map = (char ***)ft_createmap(mapsize);
+	map = ft_createmap(mapsize);
 
 	while (n < blocknumb)
 	{
-		if (ft_checkaddblock(filecontent[n], (char ***)**map, n, mapsize, offset) == 0)
+		ft_putstr("The list of my tetriminos blocks : (with y,x,y,x,y,x,y,x coordonnate) for each # carateres");
+		ft_checkaddblock(filecontent[n], &map, n, mapsize, offset);
+		n++;
+		/*
+		if (ft_checkaddblock(filecontent[n], &map, n, mapsize, offset) == 0)
 		{
 			// la piece ne rentre pas, on augmente l'offset
 			offset++;
 		}
-		else if (ft_checkaddblock(filecontent[n], (char ***)**map, n, mapsize, offset) == 1)
+		else if (ft_checkaddblock(filecontent[n], &map, n, mapsize, offset) == 1)
 		{
 			offset = 0;
 			mapsize++;
 			free(map);
-			map = (char ***)ft_createmap(mapsize);
+			map = ft_createmap(mapsize);
 			resolvesquare(filecontent, blocknumb, mapsize);
 			return (0);
 		}
@@ -185,12 +194,11 @@ int		resolvesquare(char **filecontent, int blocknumb, int mapsize)
 			// La piece rentre, on passe donc à la suivante
 			n++;
 		}
+		*/
 	}
-
 
 			// Ou si au bout de la map, Agrandir la taille de la map
 			// On re-resous le plus petit carré mais en aggrandissant la map
-	}
 
 	// Si toutes les pieces tiennent bien dans la map actuelle, 
 	// la créer et l'afficher:

@@ -6,13 +6,13 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 16:32:42 by pbillett          #+#    #+#             */
-/*   Updated: 2016/02/16 18:32:23 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/02/24 17:14:11 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-int		filter_file(char *my_block)
+static int		filter_file(char *my_block)
 {
 	int comptdieze;
 	int comptpoint;
@@ -66,7 +66,7 @@ int		filter_file(char *my_block)
 	return (0);
 }
 
-int		checktouch(char *block)
+static int		checktouch(char *block)
 {
 	int i;
 	int touchotherdieze;
@@ -101,7 +101,7 @@ int		checktouch(char *block)
 	return(0);
 }
 
-int		ft_blocknumb(char *filecontent)
+static int		ft_blocknumb(char *filecontent)
 {
 	int blocknumb;
 	int i;
@@ -112,9 +112,12 @@ int		ft_blocknumb(char *filecontent)
 	while (filecontent[i] != '\0')
 	{
 		if ((filecontent[i] == '\n') && (filecontent[i + 1] == '\n' || filecontent[i + 1] == '\0')) // Attention d'etre logiaue et propre pour calculer le nombre de bloc !!! Un nbr de bloc mauvais peut forcement rendre tout le reste des scripts mauvais.
-			blocknumb++;
+			{
+				blocknumb++;
+			}
 		i++;
 	}
+	//ft_putendl("toto");
 	return (blocknumb);
 }
 
@@ -132,25 +135,29 @@ char	**checkfile(char *filecontent, int *blocknumb)
 	// Je filtre mon fichier
 	if (filter_file(filecontent) != 0)
 	{
-		ft_putstr("Bad filter_file");
+		ft_putstr("Bad filter_file\n");
 		return (NULL);
 	}
 
 	// Je compte le nombre de blocs:
-	blocknumb = (int *)ft_blocknumb(filecontent);
+	//ft_putnbr(ft_blocknumb(filecontent));
+	*blocknumb = ft_blocknumb(filecontent);
 
 	// Je fais mes mallocs:
 	i = 0;
-	all_block = (char **)malloc((int)blocknumb * sizeof(char*));
+	//ft_putnbr(*blocknumb);
+	all_block = (char **)malloc(*blocknumb * sizeof(char*));
+	
 	if (all_block == NULL)
 		return (NULL);
-	while (i <= (int)blocknumb)
+	while (i <= *blocknumb)
 	{
 		all_block[i] = malloc(21);
 		if (all_block[i] == NULL)
 			return (NULL);
 		i++;
 	}
+	ft_putstr("malloc ok\n");
 
 	// J'enregistre chaque bloc dans un tableau:
 	i = 0;
@@ -167,14 +174,17 @@ char	**checkfile(char *filecontent, int *blocknumb)
 		}
 		i++;
 	}
+	ft_putstr("bloc saved in tab ok\n");
 
 	// Je verifie que les blocks de tetriminos se touchent 
 	n = 0;
-	while (n < (int)blocknumb)
+	while (n < *blocknumb)
 	{
 		if (checktouch(all_block[n]) != 0)
 			return (NULL);
 		n++;
 	}
+	ft_putstr("check touch ok\n");
+	
 	return (all_block);
 }

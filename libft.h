@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/23 12:11:15 by pbillett          #+#    #+#             */
-/*   Updated: 2016/02/16 16:42:29 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/02/24 20:24:36 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void				ft_putnbr_fd(int n, int fd);
 void				ft_putendl(char const *s);
 void				ft_putendl_fd(char const *s, int fd);
 char				*ft_itoa(int n);
+void				ft_putlstnbr(int *lstnbr, int numbelem);
 
 void				*ft_memalloc(size_t size);
 void				ft_memdel(void **ap);
@@ -68,7 +69,6 @@ char				*ft_strsub(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *s);
 char				**ft_strsplit(char const *s, char c);
-void				ft_tabdel(char **tab, int numbelem);
 
 typedef struct		s_list
 {
