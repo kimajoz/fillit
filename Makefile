@@ -6,7 +6,7 @@
 #    By: pbillett <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/02/02 16:12:19 by pbillett          #+#    #+#              #
-#    Updated: 2016/02/10 14:02:59 by pbillett         ###   ########.fr        #
+#    Updated: 2016/02/26 18:10:57 by pbillett         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ LIB = libft.a
 all:	$(NAME)
 
 $(NAME):	$(SRC)
-	gcc -Wall -Werror -Wextra -o $(NAME) $(SRC) $(LIB)
+# 	gcc -Wall -Werror -Wextra -o $(NAME) $(SRC) $(LIB)
+	gcc -Wall -Werror -Wextra -o $(NAME) $(SRC) -L . -lft
 
 clean:
 	rm -rf $(NAME)

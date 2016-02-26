@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 17:44:57 by pbillett          #+#    #+#             */
-/*   Updated: 2016/02/24 20:49:24 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/02/26 18:03:46 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,37 +119,46 @@ static char		**ft_checkaddblock(char *curblock, char ***map, int numeropiece, in
 	m = 0;
 
 	piece = malloc(8 * sizeof(int));// Malloc pour les 4 diezes (xy,xy,xy,xy,)
-	while (curblock[i] != '\0')
+	while (!(piece[8]))
 	{
-		if (curblock[i] == '#')
+		while (curblock[i] != '\0')
 		{
-			while (((ft_checkmap(x, y, *map)) == 1) && (x < mapsize && y < mapsize)) // Tant que ca tient dans la map
+			if (curblock[i] == '#')
 			{
-				// On recupere sa position en x et y (on la deduit)
-				y = ((i + offset) / 5); //Soit 1 ligne (et pas ligne 0)
-				//ft_putnbr(y);
-				x = ((i + offset) % 5); //Soit 2 (soit 3 pieces) pour une piece situé en case 8 
-				//ft_putnbr(x);
+				if (((ft_checkmap(x, y, *map)) == 1) && (x < mapsize && y < mapsize)) // Tant que ca tient dans la map
+				{
+					// On recupere sa position en x et y (on la deduit)
+					y = ((i + offset) / 5); //Soit 1 ligne (et pas ligne 0)
+					//ft_putnbr(y);
+					x = ((i + offset) % 5); //Soit 2 (soit 3 pieces) pour une piece situé en case 8 
+					//ft_putnbr(x);
+					// Sinon je la stocke dans un tableau pour l'inserer +tard
+					piece[m++] = y;
+					piece[m++] = x;
+					ft_putstr("try ok");
+
+					if (!(piece[8]))
+					{
+						// On ajoute réellement la piece dans la map.
+						ft_putnbr(numeropiece);
+						ft_putstr(" piece : ");
+						ft_putlstnbr(piece, 8);
+						ft_putstr("\n");
+						//*map = ft_addblock(piece, map, numeropiece);
+						return(*map); // Si toutes les pieces rentrent bien dans la map, j'insere la piece, et je sors
+					}
+				}
+				else if (y > mapsize)
+				{
+					ft_putstr("try ok");
+					return (NULL);
+				}
 				offset++;
 			}
-			// Sinon je la stocke dans un tableau pour l'inserer +tard
-			piece[m++] = y;
-			piece[m++] = x;
+			i++;
 		}
-		i++;
 	}
-
-	// On ajoute réellement la piece dans la map.
-	ft_putnbr(numeropiece);
-	ft_putstr(" piece : ");
-	ft_putlstnbr(piece, 8);
-	ft_putstr("\n");
-	//*map = ft_addblock(piece, map, numeropiece);
-	if (*map != NULL)
-		return(*map); // Si toutes les pieces rentrent bien dans la map, j'insere la piece, et je sors
-	//return(*map); // Si toutes les pieces rentrent bien dans la map, j'insere la piece, et je sors
-	else
-		return (NULL);
+	return (NULL);
 }
 
 int		resolvesquare(char **filecontent, int blocknumb, int mapsize)
@@ -174,6 +183,7 @@ int		resolvesquare(char **filecontent, int blocknumb, int mapsize)
 		{ //La piece est bien passé,
 			// La piece rentre, on passe donc à la suivante
 			n++;
+			ft_putstr("piece suivante");
 		}
 		else
 		{
