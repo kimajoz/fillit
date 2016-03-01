@@ -21,6 +21,7 @@
 
 char	*openfile(char* filename);
 char	**checkfile(char* filecontent, int *blocknumb);
+int		*create_tetriminos(char *curblock, int numeropiece)
 int		resolvesquare(char **filecontent, int blocknumb, int mapsize);
 
 #endif

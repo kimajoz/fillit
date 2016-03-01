@@ -14,6 +14,7 @@ NAME = fillit
 SRC = main.c \
 		openfile.c \
 		checkfile.c \
+		create_tetriminos \
 		resolvesquare.c
 LIB = libft.a
 
@@ -21,7 +22,7 @@ all:	$(NAME)
 
 $(NAME):	$(SRC)
 # 	gcc -Wall -Werror -Wextra -o $(NAME) $(SRC) $(LIB)
-	gcc -Wall -Werror -Wextra -o $(NAME) $(SRC) -L . -lft
+	gcc -Wall -Werror -Wextra -o $(NAME) $(SRC) -L .  #Pour linux home
 
 clean:
 	rm -rf $(NAME)
