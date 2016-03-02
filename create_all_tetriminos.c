@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/02 10:22:34 by pbillett          #+#    #+#             */
-/*   Updated: 2016/03/02 12:42:37 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/03/02 13:55:21 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ static void		show_tetriminos(int **pieces, int numberofpiece)
 }
 
 
-int			create_all_tetriminos(char **filecontent, int numberofpiece)
+int			**create_all_tetriminos(char **filecontent, int numberofpiece)
 {
 	int n;
 	int *piece;
@@ -121,5 +121,5 @@ int			create_all_tetriminos(char **filecontent, int numberofpiece)
 	}
 	remove_free_line(pieces, numberofpiece);
 	show_tetriminos(pieces, numberofpiece);
-	return (0);
+	return (pieces);
 }

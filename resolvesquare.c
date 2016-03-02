@@ -6,53 +6,37 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 17:44:57 by pbillett          #+#    #+#             */
-/*   Updated: 2016/03/02 11:23:36 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/03/02 20:36:05 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-/*
 static char	**ft_createmap(int mapsize)
 {
+	int y;
 	int x;
 	char **map;
 
+	y = 0;
 	x = 0;
+	ft_putstr("Je cree la map\n");
 	map = (char **)malloc(mapsize * sizeof(char *));
-	while (x < mapsize)
+	while (y < mapsize)
 	{
-		map[x] = (char *)malloc(mapsize * sizeof(char));
-		x++;
+		map[y] = (char *)malloc(mapsize * sizeof(char));
+		while(x < mapsize)
+		{
+			map[y][x] = '.';
+			x++;
+		}
+		x = 0;
+		y++;
 	}
 	return(map);
 }
-*/
-static int		ft_checkmap(int x, int y, char **map)
-{
-	int i;
-	int j;
 
-	i = 0;
-	j = 0;
-	//ft_putstr("start check_map");
-
-	while (map[j])
-	{
-		while (map[j][i] != '\0')
-		{
-			if ((i == x && j == y) && (map[j][i] == '#'))
-				return (1);
-			else
-				return (0);
-			i++;
-		}
-		j++;
-	}
-	return (0);
-}
-
-static int		ft_showmap(char **map)
+static int		ft_showmap(char **map, int mapsize)
 {
 	int i;
 	int j;
@@ -61,19 +45,21 @@ static int		ft_showmap(char **map)
 	j = 0;
 	ft_putstr("I show the map : \n\n");
 
-	while (map[j])
+	while (j < mapsize)
 	{
 		while (map[j][i] != '\0')
 		{
 			ft_putchar(map[j][i]);
 			i++;
 		}
+		ft_putchar('\n');
+		i = 0;
 		j++;
 	}
 	return (0);
 }
-/*
-static char	**ft_addblock(int *piece, char ***map, int numeropiece)
+
+static char		**ft_addblock(int *piece, char ***map, int mapsize, int offset)
 {
 	int i;
 	int j;
@@ -81,23 +67,43 @@ static char	**ft_addblock(int *piece, char ***map, int numeropiece)
 	int y;
 	int m;
 
-	i = 0;
 	j = 0;
 	m = 0;
 
-	y = piece[m];
-	x = piece[m++];
-	m++; //pour sauter la virgule
-	while ((*map)[j])
+	/*
+	if (offset != 0) // Si il y a un offset mettre a jour toutes les coordonnees
+	while (piece[i] != '\0')
 	{
+		piece[i] = piece[i] + offset;
+		i++;
+	}
+	i = 0;
+	*/
+	ft_putnbr(offset);
+
+	ft_putlstnbr(piece, 8);
+	ft_putchar('\n');
+	y = piece[m++];
+	x = piece[m++];
+	ft_putchar('\n');
+
+	while (j < mapsize)
+	{
+		i = 0;
 		while ((*map)[j][i] != '\0')
 		{
+			ft_putstr("ia");
 			if (j == y && i == x)
 			{
-				(*map)[i][j] = 'A' + numeropiece; // On marque le caractere dize dans la map
+				ft_putstr("one");
+				//(*map)[i][j] = 'A' + numeropiece; // On marque le caractere dieze dans la map
+				(*map)[j][i] = '#'; // On marque le caractere dieze dans la map
 				y = piece[m++];
 				x = piece[m++];
-				m++; //pour sauter la virgule
+				ft_putnbr(m);
+				ft_putnbr(y);
+				ft_putnbr(x);
+				//m++; //pour sauter la virgule
 			}
 			i++;
 		}
@@ -105,81 +111,86 @@ static char	**ft_addblock(int *piece, char ***map, int numeropiece)
 	}
 	return (*map);
 }
-*/
-static char		**ft_checkaddblock(char *curblock, char ***map, int numeropiece, int mapsize, int offset)
+
+static char		**ft_checkaddblock(int *piece, char ***map, int numeropiece, int mapsize, int **all_tetriminos, int blocknumb)
 {
 	int i;
 	int y;
 	int x;
 	int m;
-	int *piece;
+	int offset;
 
 	i = 0;
 	y = 0;
 	x = 0;
 	m = 0;
+	offset = 0;
 
-	piece = malloc(8 * sizeof(int));// Malloc pour les 4 diezes (xy,xy,xy,xy,)
-	while (!(piece[8]))
+	while (i < 8)
 	{
-		while (curblock[i] != '\0')
+		ft_putstr("i : ");
+		ft_putnbr(i);
+		ft_putchar('\n');
+		y = piece[i] + offset;
+		x = piece[i + 1] + offset;
+		//if (*map[y][x] != '#' && *map[y][x] != '\0')
+		if (y >= mapsize || x >= mapsize)
 		{
-			if (curblock[i] == '#')
-			{
-				if (((ft_checkmap(x, y, *map)) == 1) && (x < mapsize && y < mapsize)) // Tant que ca tient dans la map
-				{
-					// On recupere sa position en x et y (on la deduit)
-					y = ((i + offset) / 5); //Soit 1 ligne (et pas ligne 0)
-					//ft_putnbr(y);
-					x = ((i + offset) % 5); //Soit 2 (soit 3 pieces) pour une piece situé en case 8 
-					//ft_putnbr(x);
-					// Sinon je la stocke dans un tableau pour l'inserer +tard
-					piece[m++] = y;
-					piece[m++] = x;
-					ft_putstr("try ok");
-
-					if (!(piece[8]))
-					{
-						// On ajoute réellement la piece dans la map.
-						ft_putnbr(numeropiece);
-						ft_putstr(" piece : ");
-						ft_putlstnbr(piece, 8);
-						ft_putstr("\n");
-						//*map = ft_addblock(piece, map, numeropiece);
-						return(*map); // Si toutes les pieces rentrent bien dans la map, j'insere la piece, et je sors
-					}
-				}
-				else if (y > mapsize)
-				{
-					ft_putstr("try ok");
-					return (NULL);
-				}
-				offset++;
-			}
-			i++;
+			ft_putstr("recreate new map");
+			while (m < mapsize) // je supprime toute ma carte precedente
+				free((*map)[m++]);
+			free(*map);
+			m = 0;
+			offset = 0;
+			mapsize++; //J'incremente la taille de ma map
+			*map = ft_createmap(mapsize);
+			resolvesquare(all_tetriminos, blocknumb, mapsize);
+			return (NULL);
+		}
+		if ((*map)[y][x] == '.')
+		{
+			ft_putnbr(mapsize);
+			ft_putnbr(y);
+			ft_putnbr(x);
+			ft_putnbr(i);
+			i = i + 2;// la piece est la j'incremente de 2
+			ft_putstr("+\n");
+		}
+		if ((i == 8) && ((*map)[y][x] == '.')) // Toutes les pieces du tetriminos ont bien des cases vides, j'insere donc la piece
+		{
+			//inserer piece
+			ft_putstr("piece insert");
+			ft_putnbr(numeropiece);
+			ft_putchar('\n');
+			*map = ft_addblock(piece, map, mapsize, offset);
+			ft_showmap(*map, mapsize);
+			break ;
+		}
+		if ((*map)[y][x] == '#')
+		{
+			ft_putstr("offset\n");
+			offset++;
 		}
 	}
-	return (NULL);
+	return (*map);
 }
 
-int		resolvesquare(char **filecontent, int blocknumb, int mapsize)
+int		resolvesquare(int **all_tetriminos, int blocknumb, int mapsize)
 {
 	int n;
 	char **map;
-	int offset;
 
 	ft_putstr("resolvesquare\n");
 	n = 0;
-	offset = 0;
-	//mapsize++;
-	//map = ft_createmap(mapsize);
+	mapsize++;
+	map = ft_createmap(mapsize);
+	ft_showmap(map, mapsize);
 
 	while (n < blocknumb)
 	{
-		ft_checkaddblock(filecontent[n], &map, n, mapsize, offset);
+		ft_checkaddblock(all_tetriminos[n], &map, n, mapsize, all_tetriminos, blocknumb);
 		n++;
 	}
-		
 		/*
 		if (ft_checkaddblock(filecontent[n], &map, n, mapsize, offset) != NULL)
 		{ //La piece est bien passé,
@@ -206,7 +217,7 @@ int		resolvesquare(char **filecontent, int blocknumb, int mapsize)
 
 	// Si toutes les pieces tiennent bien dans la map actuelle, 
 	// la créer et l'afficher:
-	ft_showmap(map);
+	ft_showmap(map, mapsize);
 
 	//if () // not succeed
 	//	ft_putstr("error not resolvesquare");

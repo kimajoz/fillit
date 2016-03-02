@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 15:54:00 by pbillett          #+#    #+#             */
-/*   Updated: 2016/03/02 11:09:59 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/03/02 14:02:14 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,20 @@
 
 int		main(int argc, char **argv)
 {
-	int blocknumb;
+	int nombrepieces;
 	char **tab_tot;
+	int **all_tetriminos;
 
-	blocknumb = 0;
+	nombrepieces = 0;
 	if (argc == 2)
 	{
 		// Si le fichier est verifie, je le resous
-		tab_tot = checkfile(openfile(argv[1]), &blocknumb);
+		tab_tot = checkfile(openfile(argv[1]), &nombrepieces);
 		if (tab_tot != NULL)
 		{
 			ft_putstr("ok file open\n");
-			create_all_tetriminos(tab_tot, blocknumb);
-			//resolvesquare(tab_tot, blocknumb, 2);
+			all_tetriminos = create_all_tetriminos(tab_tot, nombrepieces);
+			resolvesquare(all_tetriminos, nombrepieces, 2);
 			//ft_tabdel(tab_tot, (int)blocknumb); // Utiliser plutot une fonction aui free tout recursivement
 		}
 		else
