@@ -6,12 +6,13 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 17:44:57 by pbillett          #+#    #+#             */
-/*   Updated: 2016/02/26 18:03:46 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/03/02 11:23:36 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
+/*
 static char	**ft_createmap(int mapsize)
 {
 	int x;
@@ -26,7 +27,7 @@ static char	**ft_createmap(int mapsize)
 	}
 	return(map);
 }
-
+*/
 static int		ft_checkmap(int x, int y, char **map)
 {
 	int i;
@@ -175,9 +176,7 @@ int		resolvesquare(char **filecontent, int blocknumb, int mapsize)
 
 	while (n < blocknumb)
 	{
-		ft_putstr("The list of my tetriminos blocks : (with y,x,y,x,y,x,y,x coordonnate) for each # carateres");
-		create_tetriminos(filecontent[n], n);
-		//ft_createtetriminos(filecontent[n], &map, n, mapsize, offset);
+		ft_checkaddblock(filecontent[n], &map, n, mapsize, offset);
 		n++;
 	}
 		
