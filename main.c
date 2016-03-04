@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 15:54:00 by pbillett          #+#    #+#             */
-/*   Updated: 2016/03/02 14:02:14 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/03/04 16:25:48 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		main(int argc, char **argv)
 		{
 			ft_putstr("ok file open\n");
 			all_tetriminos = create_all_tetriminos(tab_tot, nombrepieces);
-			resolvesquare(all_tetriminos, nombrepieces, 2);
+			resolvesquare(all_tetriminos, nombrepieces, 2, 0);
 			//ft_tabdel(tab_tot, (int)blocknumb); // Utiliser plutot une fonction aui free tout recursivement
 		}
 		else
