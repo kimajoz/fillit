@@ -22,7 +22,8 @@ all:	$(NAME)
 
 $(NAME):	$(SRC)
 	gcc -Wall -Werror -Wextra -o $(NAME) $(SRC) $(LIB)
-	#gcc -Wall -Werror -Wextra -o $(NAME) $(SRC) -L .  #Pour linux home
+	#gcc -Wall -Werror -Wextra -o $(NAME) $(SRC) -L .  #Autre technique
+#Pour linux rien à modifier. Penser juste à bien recompiler la librairie utiliser sous linux. (ex: ici libft.a) Voila ! :) Enjoy !
 
 clean:
 	rm -rf $(NAME)
@@ -30,3 +31,15 @@ clean:
 fclean: clean
 
 re: fclean all
+
+libs: libft
+
+libft:
+	( cd ../libft/ && make re && cp libft.a ../fillit/; )
+
+reall: libft re
+
+exec:
+	./fillit small_extern_file.txt
+
+reallexec: reall exec

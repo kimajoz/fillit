@@ -55,10 +55,8 @@ static int		*create_tetriminos(char *curblock, int numeropiece)
 static int			**remove_free_line(int **pieces, int numberofpiece)
 {
 	int n;
-	int i;
 
 	n = 0;
-	i = 0;
 	while(n < numberofpiece)
 	{
 		while ((pieces[n][0] > 0) && (pieces[n][2] > 0) && (pieces[n][4] > 0) && (pieces[n][6] > 0))
