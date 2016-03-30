@@ -1,0 +1,23 @@
+
+- tant que je parcoure ma map.
+
+- si ca sort du tableau lors de l'insert.
+- si c'est la fin du tableau lors du parcours.
+
+
+
+
+- il y a le fait que l'on soit dans la map quand on la parcoure
+- Et le fait d'etre en dehors
+
+
+
+on parcours la map:
+	- Soit ca rentre,
+		-on insert la piece
+
+	- Soit ca rentre pas:
+		- soit c'est l'offset qui fqit que ca rentre pas dans la ligne
+		- soit c'est un bloc qui est deja bloque(occuppe) par un dieze.
+
+

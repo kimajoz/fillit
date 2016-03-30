@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 17:44:57 by pbillett          #+#    #+#             */
-/*   Updated: 2016/03/05 19:29:23 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/03/30 14:08:42 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,11 +126,23 @@ static char		**ft_checkaddblock(int *piece, char ***map, int numeropiece, int ma
 
 	i = 0;
 	ft_putstr("ft_checkaddblock\n");
+
+	ft_putstr("offsetY : ");
 	ft_putnbr(offsetY);
+	ft_putchar('\n');
+	ft_putstr("offsetX : ");
 	ft_putnbr(offsetX);
+	ft_putchar('\n');
 	ft_putstr("je teste piece numero : ");
 	ft_putnbr(numeropiece);
 	ft_putchar('\n');
+	
+	ft_putstr("Mapsize : ");
+	ft_putnbr(mapsize);
+	ft_putchar('\n');
+
+	// SI CA RENTRE ON RETOURNE LA NOUVELLE MAP AVEC LA PIECE.
+	// SINON ON RETOURNE NULL ! (ON FAIT L'INCREMENTE DE L'OFFSET A L'EXTERIEUR.)
 
 	// Verification aue l'on est pas en dehors de la map avant le demarrage du test de placage de la piece dans une map trop petite
 	while (i < 8)
@@ -138,58 +150,37 @@ static char		**ft_checkaddblock(int *piece, char ***map, int numeropiece, int ma
 			//ft_putnbr(i);
 			if (((piece[i] + offsetY) >= mapsize) || ((piece[i + 1] + offsetX) >= mapsize))
 			{
-				ft_putstr("ft_checkaddblockZZZ");
-				return (NULL);
+				return(NULL);
 			}
 			i++;
 		}
+	ft_putlstnbr(piece, 8);
+	ft_putchar('\n');
 
-	while ((*map)[(piece[0] + offsetY)][(piece[1] + offsetX)] != '.' &&
-	(*map)[(piece[2] + offsetY)][(piece[3] + offsetX)] != '.' &&
-	(*map)[(piece[4] + offsetY)][(piece[5] + offsetX)] != '.' &&
-	(*map)[(piece[6] + offsetY)][(piece[7] + offsetX)] != '.')
+
+	if ((*map)[(piece[0] + offsetY)][(piece[1] + offsetX)] == '#' ||
+	(*map)[(piece[2] + offsetY)][(piece[3] + offsetX)] == '#' ||
+	(*map)[(piece[4] + offsetY)][(piece[5] + offsetX)] == '#' ||
+	(*map)[(piece[6] + offsetY)][(piece[7] + offsetX)] == '#')
 	{
-		while (i < 8)
-		{
-			//ft_putnbr(i);
-			if (((piece[i] + offsetY) >= mapsize) || ((piece[i + 1] + offsetX) >= mapsize))
-			{
-				ft_putstr("ft_checkaddblockZZZ");
-				return (NULL);
-			}
-			i++;
-		}
-			//ft_putstr("ft_checkaddblockA");
-		if ((*map)[(piece[0] + offsetY)][(piece[1] + offsetX)] == '#' ||
-		(*map)[(piece[2] + offsetY)][(piece[3] + offsetX)] == '#' ||
-		(*map)[(piece[4] + offsetY)][(piece[5] + offsetX)] == '#' ||
-		(*map)[(piece[6] + offsetY)][(piece[7] + offsetX)] == '#')
-		{
-			ft_putstr("offset\n");
-			if (offsetX > mapsize)
-			{
-				offsetY++;
-				offsetX = 0;
-			}
-			else
-				offsetX++;
-		}
+		return (NULL);
 	}
+
 	if ((*map)[(piece[0] + offsetY)][(piece[1] + offsetX)] == '.' &&
 	(*map)[(piece[2] + offsetY)][(piece[3] + offsetX)] == '.' &&
 	(*map)[(piece[4] + offsetY)][(piece[5] + offsetX)] == '.' &&
 	(*map)[(piece[6] + offsetY)][(piece[7] + offsetX)] == '.')
 	{
 		//inserer la piece
-		ft_putstr("piece insert");
+		ft_putstr("piece insert n");
 		ft_putnbr(numeropiece);
 		ft_putchar('\n');
 		*map = ft_addblock(piece, map, mapsize, offsetY, offsetX);
-		ft_putstr("MAP : INSERT PIECE");
+		ft_putstr("MAP : INSERT PIECE\n");
 		ft_showmap(*map, mapsize);
 		return (*map);
 	}
-	return (*map);
+	return (NULL);
 }
 
 int		checkpositioninmap( int ***all_tetriminos, int nombrepieces, int mapsize, char **map, int numpiece_actuelle)
@@ -197,10 +188,12 @@ int		checkpositioninmap( int ***all_tetriminos, int nombrepieces, int mapsize, c
 	int y;
 	int x;
 	int m;
+	int i;
 	
 	y = 0;
 	x = 0;
 	m = 0;
+	i = 0;
 	while (numpiece_actuelle < nombrepieces)
 	{
 		while (y < mapsize)
@@ -208,62 +201,107 @@ int		checkpositioninmap( int ***all_tetriminos, int nombrepieces, int mapsize, c
 			x = 0;
 			while (map[y][x] != '0')
 			{
+				if (numpiece_actuelle > nombrepieces)
+				{
+					// fin de l'algo
+					return(1);
+				}
 				if (ft_checkaddblock((*all_tetriminos)[numpiece_actuelle], &map, numpiece_actuelle, mapsize, y, x) == NULL)
 				{
-					// recreer la map
-					ft_putstr("recreate new map");
-					while (m < mapsize) // je supprime toute ma carte precedente
+					// LA PIECE NE RENTRE PAS !
+					// ON INCREMENTE DONC SA POSITION DANS LA MAP ACTUELLE JUSQU'A SA FIN !
+					while (i < 8)
 					{
-						free(map[m]);
-						m++;
+						if (x <= mapsize)
+						{
+							ft_putstr("Test d'insert en dehors de la carte ! Je continue de me deplacer dans la map :\n");
+							ft_putstr("J'incremente en X\n");
+							x++;
+						}
+						else if (x >= mapsize)
+						{
+							ft_putstr("Test d'insert en dehors de la carte ! Je continue de me deplacer dans la map :\n");
+							ft_putstr("J'incremente en Y\n");
+							x = 0;
+							y++;
+						}
+						if (y > mapsize)
+						{
+							ft_putstr("En dehors de la carte ! je recree une map plus grande.\n");
+
+							// recreer la map
+							ft_putstr("recreate new map");
+							while (m < mapsize) // je supprime toute ma carte precedente
+							{
+								free(map[m]);
+								m++;
+							}
+							free(map);
+							m = 0;
+							mapsize++; //J'incremente la taille de ma map
+							ft_putnbr(mapsize);
+							map = ft_createmap(mapsize);
+							numpiece_actuelle = 0;
+							checkpositioninmap(all_tetriminos, nombrepieces, mapsize, map, numpiece_actuelle);
+							return (0);
+						}
+						i++;
 					}
-						free(map);
-					m = 0;
-					mapsize++; //J'incremente la taille de ma map
-					ft_putnbr(mapsize);
-					map = ft_createmap(mapsize);
-					resolvesquare(*all_tetriminos, nombrepieces, mapsize);
-					return (0);
 				}
 				else
 				{
+					ft_putstr("Piece suivante !\n");
 					//ft_putstr("-----------------------------------------------------------\n");
 					//map = ft_checkaddblock((*all_tetriminos)[numpiece_actuelle], &map, numpiece_actuelle, mapsize, y, x);
 					//ft_showmap(map, mapsize);
 					numpiece_actuelle++;
-
-					checkpositioninmap(all_tetriminos, nombrepieces, mapsize, map, numpiece_actuelle);
-					return(1);
+					//return(1);
 				}
 				x++;
 			}
 			y++;
 		}
 	}
-	if (numpiece_actuelle == nombrepieces)
-	{
-		ft_putstr("fini d'inserer toutes les pieces.");
-		ft_showmap(map, mapsize);
-		return (0);
-	}
 	return (0);
 }
 
 int		resolvesquare(int **all_tetriminos, int nombrepieces, int mapsize)
 {
+	int m;
 	int n;
 	char **map;
 
+	m = 0;
 	n = 0;
 	ft_putstr("resolvesquare\n");
 	map = ft_createmap(mapsize);
 	ft_showmap(map, mapsize);
-
+	if (checkpositioninmap(&all_tetriminos, nombrepieces, mapsize, map, n) == 1)
+	{
+		ft_putstr("fini d'inserer toutes les pieces.");
+		ft_showmap(map, mapsize);
+		return (0);
+	}
+	/*
 	while (n < nombrepieces)
 	{
-		checkpositioninmap(&all_tetriminos, nombrepieces, mapsize, map, n);
-		n++;
+		if (checkpositioninmap(&all_tetriminos, nombrepieces, mapsize, map, n) == 0)
+		{
+									//checkpositioninmap(&all_tetriminos, nombrepieces, mapsize, map, n);
+		}
+		else if (checkpositioninmap(&all_tetriminos, nombrepieces, mapsize, map, n) == 1)
+		{
+			//ft_putstr("test46");
+			//n++;
+			//checkpositioninmap(&all_tetriminos, nombrepieces, mapsize, map, n);
+		}
 	}
+	{
+		ft_putstr("fini d'inserer toutes les pieces.");
+		ft_showmap(map, mapsize);
+		return (0);
+	}
+	*/
 		/*
 		if (ft_checkaddblock(filecontent[n], &map, n, mapsize, offset) != NULL)
 		{ //La piece est bien passé,
