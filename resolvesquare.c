@@ -61,7 +61,7 @@ static int		ft_showmap(char **map, int mapsize)
 	return (0);
 }
 
-static char		**ft_addblock(int *piece, char ***map, int mapsize, int offsetY, int offsetX)
+static char		**ft_addblock(int *piece, int numeropiece, char ***map, int mapsize, int offsetY, int offsetX)
 {
 	int i;
 	int j;
@@ -72,13 +72,17 @@ static char		**ft_addblock(int *piece, char ***map, int mapsize, int offsetY, in
 	i = 0;
 	j = 0;
 	m = 0;
+	
+	ft_putlstnbr(piece, 8);
+	ft_putchar('\n');
 
 	if ((offsetX != 0) || (offsetY != 0)) // Si il y a un offset mettre a jour toutes les coordonnees
 	{
-		while (piece[i] != '\0')
+		ft_putstr("testpapa");
+		while (i < 8)
 		{
-			piece[i] = piece[i] + offsetY;
-			piece[i + 1] = piece[i + 1] + offsetX;
+			piece[i] = piece[i] + offsetY; // On ajoute loffset en Y
+			piece[i + 1] = piece[i + 1] + offsetX; // Sinon en X
 			i = i + 2;
 		}
 		i = 0;
@@ -104,8 +108,8 @@ static char		**ft_addblock(int *piece, char ***map, int mapsize, int offsetY, in
 			if (j == y && i == x)
 			{
 				//ft_putstr("one");
-				//(*map)[i][j] = 'A' + numeropiece; // On marque le caractere dieze dans la map
-				(*map)[j][i] = '#'; // On marque le caractere dieze dans la map
+				(*map)[j][i] = 'A' + numeropiece; // On marque le caractere dieze dans la map
+				//(*map)[j][i] = '#'; // On marque le caractere dieze dans la map
 				ft_putnbr(y);
 				ft_putnbr(x);
 				//ft_putnbr(m);
@@ -133,6 +137,7 @@ static char		**ft_checkaddblock(int *piece, char ***map, int numeropiece, int ma
 	ft_putstr("offsetX : ");
 	ft_putnbr(offsetX);
 	ft_putchar('\n');
+	
 	ft_putstr("je teste piece numero : ");
 	ft_putnbr(numeropiece);
 	ft_putchar('\n');
@@ -144,7 +149,7 @@ static char		**ft_checkaddblock(int *piece, char ***map, int numeropiece, int ma
 	// SI CA RENTRE ON RETOURNE LA NOUVELLE MAP AVEC LA PIECE.
 	// SINON ON RETOURNE NULL ! (ON FAIT L'INCREMENTE DE L'OFFSET A L'EXTERIEUR.)
 
-	// Verification aue l'on est pas en dehors de la map avant le demarrage du test de placage de la piece dans une map trop petite
+	// Verification que l'on est pas en dehors de la map avant le demarrage du test de placage de la piece dans une map trop petite
 	while (i < 8)
 		{
 			//ft_putnbr(i);
@@ -152,7 +157,7 @@ static char		**ft_checkaddblock(int *piece, char ***map, int numeropiece, int ma
 			{
 				return(NULL);
 			}
-			i++;
+			i = i + 2;
 		}
 	ft_putlstnbr(piece, 8);
 	ft_putchar('\n');
@@ -175,7 +180,7 @@ static char		**ft_checkaddblock(int *piece, char ***map, int numeropiece, int ma
 		ft_putstr("piece insert n");
 		ft_putnbr(numeropiece);
 		ft_putchar('\n');
-		*map = ft_addblock(piece, map, mapsize, offsetY, offsetX);
+		*map = ft_addblock(piece, numeropiece, map, mapsize, offsetY, offsetX);
 		ft_putstr("MAP : INSERT PIECE\n");
 		ft_showmap(*map, mapsize);
 		return (*map);
@@ -188,78 +193,68 @@ int		checkpositioninmap( int ***all_tetriminos, int nombrepieces, int mapsize, c
 	int y;
 	int x;
 	int m;
-	int i;
+	int numprevious_piece;
 	
 	y = 0;
 	x = 0;
 	m = 0;
-	i = 0;
 	while (numpiece_actuelle < nombrepieces)
 	{
+		numprevious_piece = numpiece_actuelle;
 		while (y < mapsize)
 		{
 			x = 0;
-			while (map[y][x] != '0')
+			while (x < mapsize)
 			{
-				if (numpiece_actuelle > nombrepieces)
-				{
-					// fin de l'algo
-					return(1);
-				}
-				if (ft_checkaddblock((*all_tetriminos)[numpiece_actuelle], &map, numpiece_actuelle, mapsize, y, x) == NULL)
-				{
-					// LA PIECE NE RENTRE PAS !
-					// ON INCREMENTE DONC SA POSITION DANS LA MAP ACTUELLE JUSQU'A SA FIN !
-					while (i < 8)
-					{
-						if (x <= mapsize)
-						{
-							ft_putstr("Test d'insert en dehors de la carte ! Je continue de me deplacer dans la map :\n");
-							ft_putstr("J'incremente en X\n");
-							x++;
-						}
-						else if (x >= mapsize)
-						{
-							ft_putstr("Test d'insert en dehors de la carte ! Je continue de me deplacer dans la map :\n");
-							ft_putstr("J'incremente en Y\n");
-							x = 0;
-							y++;
-						}
-						if (y > mapsize)
-						{
-							ft_putstr("En dehors de la carte ! je recree une map plus grande.\n");
+				ft_putstr("x:");
+				ft_putnbr(x);
+				ft_putchar('\n');
+				ft_putstr("y:");
+				ft_putnbr(y);
+				ft_putchar('\n');
 
-							// recreer la map
-							ft_putstr("recreate new map");
-							while (m < mapsize) // je supprime toute ma carte precedente
-							{
-								free(map[m]);
-								m++;
-							}
-							free(map);
-							m = 0;
-							mapsize++; //J'incremente la taille de ma map
-							ft_putnbr(mapsize);
-							map = ft_createmap(mapsize);
-							numpiece_actuelle = 0;
-							checkpositioninmap(all_tetriminos, nombrepieces, mapsize, map, numpiece_actuelle);
-							return (0);
-						}
-						i++;
-					}
+				if (ft_checkaddblock((*all_tetriminos)[numpiece_actuelle], &map, numpiece_actuelle, mapsize, y, x) == NULL)
+				{	
+					x++;
+					//ELSE
+					// LA PIECE NE RENTRE PAS !
+					// ON INCREMENTE DONC SA POSITION DANS LA MAP ACTUELLE JUSQU'A SA FIN ! (pour essayer de trouver une autre place ;))
 				}
 				else
 				{
 					ft_putstr("Piece suivante !\n");
-					//ft_putstr("-----------------------------------------------------------\n");
-					//map = ft_checkaddblock((*all_tetriminos)[numpiece_actuelle], &map, numpiece_actuelle, mapsize, y, x);
-					//ft_showmap(map, mapsize);
 					numpiece_actuelle++;
-					//return(1);
+					// Je reset la position de l'offset pour redemarrer au debut de la carte:
+					y = 0;
+					x = 0;
+					if (numpiece_actuelle == nombrepieces)
+					{
+						ft_putstr("fini d'inserer toutes les pieces.");
+						ft_showmap(map, mapsize);
+						return (1);
+					}
 				}
-				x++;
 			}
 			y++;
+		}
+		
+		if (numprevious_piece == numpiece_actuelle) // Si la piece n'a pas été inséré, alors:
+		{
+			ft_putstr("En dehors de la carte ! je recree une map plus grande.\n");
+			// recreer la map
+			while (m < mapsize) // je supprime toute ma carte precedente
+			{
+				free(map[m]);
+				m++;
+			}
+			free(map);	
+			m = 0;
+			mapsize++; //J'incremente la taille de ma map
+			ft_putnbr(mapsize);
+			map = ft_createmap(mapsize);
+			numpiece_actuelle = 0;
+			checkpositioninmap(all_tetriminos, nombrepieces, mapsize, map, numpiece_actuelle);
+			return (0);
 		}
 	}
 	return (0);
@@ -267,21 +262,14 @@ int		checkpositioninmap( int ***all_tetriminos, int nombrepieces, int mapsize, c
 
 int		resolvesquare(int **all_tetriminos, int nombrepieces, int mapsize)
 {
-	int m;
 	int n;
 	char **map;
 
-	m = 0;
 	n = 0;
 	ft_putstr("resolvesquare\n");
 	map = ft_createmap(mapsize);
 	ft_showmap(map, mapsize);
-	if (checkpositioninmap(&all_tetriminos, nombrepieces, mapsize, map, n) == 1)
-	{
-		ft_putstr("fini d'inserer toutes les pieces.");
-		ft_showmap(map, mapsize);
-		return (0);
-	}
+	checkpositioninmap(&all_tetriminos, nombrepieces, mapsize, map, n);
 	/*
 	while (n < nombrepieces)
 	{
