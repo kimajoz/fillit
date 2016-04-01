@@ -27,7 +27,7 @@ int		main(int argc, char **argv)
 		{
 			ft_putstr("ok file open\n");
 			all_tetriminos = create_all_tetriminos(tab_tot, nombrepieces);
-			resolvesquare(all_tetriminos, nombrepieces, 2);
+			resolve_smallest_square(all_tetriminos, nombrepieces, 2);
 			//ft_tabdel(tab_tot, (int)blocknumb); // Utiliser plutot une fonction aui free tout recursivement
 		}
 		else

@@ -12,53 +12,53 @@
 
 #include "fillit.h"
 
-static char	**ft_createmap(int mapsize)
+char     **ft_createmap(int mapsize)
 {
-	int y;
-	int x;
-	char **map;
+        int y;
+        int x;
+        char **map;
 
-	y = 0;
-	x = 0;
-	ft_putstr("Je cree la map\n");
-	map = (char **)malloc(mapsize * sizeof(char *));
-	while (y < mapsize)
-	{
-		map[y] = (char *)malloc(mapsize * sizeof(char));
-		while(x < mapsize)
-		{
-			map[y][x] = '.';
-			x++;
-		}
-		x = 0;
-		y++;
-	}
-	return(map);
+        y = 0;
+        x = 0;
+        ft_putstr("Je cree la map\n");
+        map = (char **)malloc(mapsize * sizeof(char *));
+        while (y < mapsize)
+        {
+                map[y] = (char *)malloc(mapsize * sizeof(char));
+                while(x < mapsize)
+                {
+                        map[y][x] = '.';
+                        x++;
+                }
+                x = 0;
+                y++;
+        }
+        return(map);
 }
 
-static int		ft_showmap(char **map, int mapsize)
+int              ft_showmap(char **map, int mapsize)
 {
-	int i;
-	int j;
+        int i;
+        int j;
 
-	i = 0;
-	j = 0;
-	ft_putstr("I show the map :");
-	ft_putnbr(mapsize);
-	ft_putchar('\n');
-	while (j < mapsize)
-	{
-		//ft_putstr("test");
-		while (i < mapsize) // Attention ici il faut mettre un \0 lors de l'allocation si on avait voulu s'arreter a la fin de la chaine de caracteres sous cette condition.
-		{
-			ft_putchar(map[j][i]);
-			i++;
-		}
-		ft_putchar('\n');
-		i = 0;
-		j++;
-	}
-	return (0);
+        i = 0;
+        j = 0;
+        ft_putstr("I show the map :");
+        ft_putnbr(mapsize);
+        ft_putchar('\n');
+        while (j < mapsize)
+        {
+                //ft_putstr("test");
+                while (i < mapsize) // Attention ici il faut mettre un \0 lors de l'allocation si on avait voulu s'arreter a la fin de la chaine de caracteres sous cette condition.
+                {
+                        ft_putchar(map[j][i]);
+                        i++;
+                }
+                ft_putchar('\n');
+                i = 0;
+                j++;
+        }
+        return (0);
 }
 
 static char		**ft_addblock(int *piece, int numeropiece, char ***map, int mapsize, int offsetY, int offsetX)
@@ -188,7 +188,7 @@ static char		**ft_checkaddblock(int *piece, char ***map, int numeropiece, int ma
 	return (NULL);
 }
 
-int		checkpositioninmap( int ***all_tetriminos, int nombrepieces, int mapsize, char **map, int numpiece_actuelle)
+int		resolvesquare( int ***all_tetriminos, int nombrepieces, int mapsize, char **map, int numpiece_actuelle)
 {
 	int y;
 	int x;
@@ -198,10 +198,10 @@ int		checkpositioninmap( int ***all_tetriminos, int nombrepieces, int mapsize, c
 	y = 0;
 	x = 0;
 	m = 0;
-	while (numpiece_actuelle < nombrepieces)
+	while (numpiece_actuelle < nombrepieces) // I go throught all my blocks
 	{
 		numprevious_piece = numpiece_actuelle;
-		while (y < mapsize)
+		while (y < mapsize) // I check the position in map
 		{
 			x = 0;
 			while (x < mapsize)
@@ -253,75 +253,9 @@ int		checkpositioninmap( int ***all_tetriminos, int nombrepieces, int mapsize, c
 			ft_putnbr(mapsize);
 			map = ft_createmap(mapsize);
 			numpiece_actuelle = 0;
-			checkpositioninmap(all_tetriminos, nombrepieces, mapsize, map, numpiece_actuelle);
+			resolvesquare(all_tetriminos, nombrepieces, mapsize, map, numpiece_actuelle);
 			return (0);
 		}
 	}
 	return (0);
 }
-
-int		resolvesquare(int **all_tetriminos, int nombrepieces, int mapsize)
-{
-	int n;
-	char **map;
-
-	n = 0;
-	ft_putstr("resolvesquare\n");
-	map = ft_createmap(mapsize);
-	ft_showmap(map, mapsize);
-	checkpositioninmap(&all_tetriminos, nombrepieces, mapsize, map, n);
-	/*
-	while (n < nombrepieces)
-	{
-		if (checkpositioninmap(&all_tetriminos, nombrepieces, mapsize, map, n) == 0)
-		{
-									//checkpositioninmap(&all_tetriminos, nombrepieces, mapsize, map, n);
-		}
-		else if (checkpositioninmap(&all_tetriminos, nombrepieces, mapsize, map, n) == 1)
-		{
-			//ft_putstr("test46");
-			//n++;
-			//checkpositioninmap(&all_tetriminos, nombrepieces, mapsize, map, n);
-		}
-	}
-	{
-		ft_putstr("fini d'inserer toutes les pieces.");
-		ft_showmap(map, mapsize);
-		return (0);
-	}
-	*/
-		/*
-		if (ft_checkaddblock(filecontent[n], &map, n, mapsize, offset) != NULL)
-		{ //La piece est bien passé,
-			// La piece rentre, on passe donc à la suivante
-			n++;
-			ft_putstr("piece suivante");
-		}
-		else
-		{
-			offset = 0;
-			mapsize++;
-			ft_putstr("mapsize:");
-			ft_putnbr(mapsize);
-			ft_putchar('\n');
-			free(map);
-			map = ft_createmap(mapsize);
-			resolvesquare(filecontent, blocknumb, mapsize);
-			return (0);
-		}
-		*/
-
-			// Ou si au bout de la map, Agrandir la taille de la map
-			// On re-resous le plus petit carré mais en aggrandissant la map
-
-	// Si toutes les pieces tiennent bien dans la map actuelle, 
-	// la créer et l'afficher:
-	//ft_showmap(map, mapsize);
-
-	//if () // not succeed
-	//	ft_putstr("error not resolvesquare");
-	return (0);
-
-	//return (map, alphabet, piece);
-}
-
