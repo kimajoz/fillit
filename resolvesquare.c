@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 17:44:57 by pbillett          #+#    #+#             */
-/*   Updated: 2016/03/30 14:08:42 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/04/05 18:37:38 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ static char		**ft_addblock(int *piece, int numeropiece, char ***map, int mapsize
 	while (j < mapsize)
 	{
 		i = 0;
-		while ((*map)[j][i] != '\0')
+		while (i < mapsize)
 		{
 			//ft_putstr("ia");
 			if (j == y && i == x)
@@ -115,12 +115,15 @@ static char		**ft_addblock(int *piece, int numeropiece, char ***map, int mapsize
 				//ft_putnbr(m);
 				y = piece[m++];
 				x = piece[m++];
+				ft_putnbr(m);
+				ft_putchar('\n');
 				//m++; //pour sauter la virgule
 			}
 			i++;
 		}
 		j++;
 	}
+	ft_putstr("end_add\n");
 	return (*map);
 }
 
