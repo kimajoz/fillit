@@ -66,13 +66,17 @@ static int		filter_file(char *my_block)
 	return (0);
 }
 
-static int		checktouch(char *block)
+static int		checktouch(char *block, int numpiece)
 {
 	int i;
 	int touchotherdieze;
 
 	i = 0;
 	touchotherdieze = 0;
+
+	ft_putstr("piece number");
+	ft_putnbr(numpiece);
+	ft_putchar('\n');
 
 	// ON VERIFIE LE NOMBRE DE CATACTERES # QUI SE TOUCHENT:
 	while (block[i] != '\0')
@@ -82,20 +86,44 @@ static int		checktouch(char *block)
 		if (block[i] == '#')
 		{
 			if ((block[i - 1] == '#') && (i > 0 && i < 19))
+			{
 				touchotherdieze++;
+				ft_putstr("touch before:");
+				ft_putnbr(touchotherdieze);
+				ft_putchar('\n');
+			}
 			if ((block[i + 1] == '#') && (i < 19))
+			{
 				touchotherdieze++;
-			if ((block[i - 5] == '#') && (i > 5))
+				ft_putstr("touch after:");
+				ft_putnbr(touchotherdieze);
+				ft_putchar('\n');
+			}
+			if ((block[i - 5] == '#') && (i > 4))
+			{
 				touchotherdieze++;
+				ft_putstr("touch line before:");
+				ft_putnbr(touchotherdieze);
+				ft_putchar('\n');
+			}
 			if ((block[i + 5] == '#') && (i < 15))
+			{
 				touchotherdieze++;
+				ft_putstr("touch line after:");
+				ft_putnbr(touchotherdieze);
+				ft_putchar('\n');
+			}
 		}
 		i++;
 	}
 	if (touchotherdieze != 6 && touchotherdieze != 8) //les carres des triominos se touche au moins 6 fois ou 8 pour le carre.
 	{
-		ft_putstr("error bad touch between #\n");
+		ft_putstr("error bad touch between #");
 		ft_putnbr(touchotherdieze);
+		ft_putchar('\n');
+		ft_putstr("piece number");
+		ft_putnbr(numpiece);
+		ft_putchar('\n');
 		return (1);
 	}
 	return(0);
@@ -180,7 +208,7 @@ char	**checkfile(char *filecontent, int *blocknumb)
 	n = 0;
 	while (n < *blocknumb)
 	{
-		if (checktouch(all_block[n]) != 0)
+		if (checktouch(all_block[n], n) != 0)
 			return (NULL);
 		n++;
 	}
