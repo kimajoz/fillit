@@ -6,35 +6,11 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 17:44:57 by pbillett          #+#    #+#             */
-/*   Updated: 2016/04/05 18:37:38 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/04/14 15:18:51 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
-
-char     **ft_createmap(int mapsize)
-{
-        int y;
-        int x;
-        char **map;
-
-        y = 0;
-        x = 0;
-        ft_putstr("Je cree la map\n");
-        map = (char **)malloc(mapsize * sizeof(char *));
-        while (y < mapsize)
-        {
-                map[y] = (char *)malloc(mapsize * sizeof(char));
-                while(x < mapsize)
-                {
-                        map[y][x] = '.';
-                        x++;
-                }
-                x = 0;
-                y++;
-        }
-        return(map);
-}
 
 int              ft_showmap(char **map, int mapsize)
 {
@@ -61,6 +37,47 @@ int              ft_showmap(char **map, int mapsize)
         return (0);
 }
 
+char     **ft_createmap(int mapsize)
+{
+        int y;
+        int x;
+        char **map;
+
+        y = 0;
+        x = 0;
+        ft_putstr("Je cree la map\n");
+        map = (char **)malloc(mapsize * sizeof(char *));
+        while (y < mapsize)
+        {
+                map[y] = (char *)malloc(mapsize * sizeof(char));
+                while(x < mapsize)
+                {
+                        map[y][x] = '.';
+                        x++;
+                }
+                x = 0;
+                y++;
+        }
+		//ft_putstr("Je montre nouvelle map fraiche\n");
+		//ft_showmap(map, mapsize);
+        return(map);
+}
+
+static int		*ft_addoffset_to_piece(int *piece, int offsetY, int offsetX)
+{
+	int i;
+
+	i = 0;
+	ft_putstr("Add offset to piece \n");
+	while (i < 8)
+	{
+		piece[i] = piece[i] + offsetY; // On ajoute loffset en Y
+		piece[i + 1] = piece[i + 1] + offsetX; // Sinon en X
+		i = i + 2;
+	}
+	return (piece);
+}
+
 static char		**ft_addblock(int *piece, int numeropiece, char ***map, int mapsize, int offsetY, int offsetX)
 {
 	int i;
@@ -77,16 +94,7 @@ static char		**ft_addblock(int *piece, int numeropiece, char ***map, int mapsize
 	ft_putchar('\n');
 
 	if ((offsetX != 0) || (offsetY != 0)) // Si il y a un offset mettre a jour toutes les coordonnees
-	{
-		ft_putstr("testpapa");
-		while (i < 8)
-		{
-			piece[i] = piece[i] + offsetY; // On ajoute loffset en Y
-			piece[i + 1] = piece[i + 1] + offsetX; // Sinon en X
-			i = i + 2;
-		}
-		i = 0;
-	}
+		ft_addoffset_to_piece(piece, offsetY, offsetX);
 	ft_putnbr(offsetY);
 	ft_putnbr(offsetX);
 
@@ -107,17 +115,20 @@ static char		**ft_addblock(int *piece, int numeropiece, char ***map, int mapsize
 			//ft_putstr("ia");
 			if (j == y && i == x)
 			{
-				//ft_putstr("one");
-				(*map)[j][i] = 'A' + numeropiece; // On marque le caractere dieze dans la map
-				//(*map)[j][i] = '#'; // On marque le caractere dieze dans la map
-				ft_putnbr(y);
-				ft_putnbr(x);
-				//ft_putnbr(m);
-				y = piece[m++];
-				x = piece[m++];
-				ft_putnbr(m);
-				ft_putchar('\n');
-				//m++; //pour sauter la virgule
+				if (m <= 8) // J'affiche uniquement pour mes 8 coordonnees
+				{
+					//ft_putstr("one");
+					(*map)[j][i] = 'A' + numeropiece; // On marque le caractere dieze dans la map
+					//(*map)[j][i] = '#'; // On marque le caractere dieze dans la map
+					ft_putnbr(y);
+					ft_putnbr(x);
+					//ft_putnbr(m);
+					y = piece[m++];
+					x = piece[m++];
+					ft_putnbr(m);
+					ft_putchar('\n');
+					//m++; //pour sauter la virgule
+				}
 			}
 			i++;
 		}
