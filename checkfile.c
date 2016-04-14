@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 16:32:42 by pbillett          #+#    #+#             */
-/*   Updated: 2016/02/24 17:14:11 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/04/14 18:35:25 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,30 +88,30 @@ static int		checktouch(char *block, int numpiece)
 			if ((block[i - 1] == '#') && (i > 0 && i < 19))
 			{
 				touchotherdieze++;
-				ft_putstr("touch before:");
+				/*ft_putstr("touch before:");
 				ft_putnbr(touchotherdieze);
-				ft_putchar('\n');
+				ft_putchar('\n');*/
 			}
 			if ((block[i + 1] == '#') && (i < 19))
 			{
 				touchotherdieze++;
-				ft_putstr("touch after:");
+				/*ft_putstr("touch after:");
 				ft_putnbr(touchotherdieze);
-				ft_putchar('\n');
+				ft_putchar('\n');*/
 			}
 			if ((block[i - 5] == '#') && (i > 4))
 			{
 				touchotherdieze++;
-				ft_putstr("touch line before:");
+				/*ft_putstr("touch line before:");
 				ft_putnbr(touchotherdieze);
-				ft_putchar('\n');
+				ft_putchar('\n');*/
 			}
 			if ((block[i + 5] == '#') && (i < 15))
 			{
 				touchotherdieze++;
-				ft_putstr("touch line after:");
+				/*ft_putstr("touch line after:");
 				ft_putnbr(touchotherdieze);
-				ft_putchar('\n');
+				ft_putchar('\n');*/
 			}
 		}
 		i++;
