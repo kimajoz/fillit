@@ -15,6 +15,7 @@ SRC = main.c \
 		openfile.c \
 		checkfile.c \
 		create_all_tetriminos.c \
+		createshow_map.c \
 		resolvesquare.c \
 		resolve_smallest_square.c
 LIB = libft.a

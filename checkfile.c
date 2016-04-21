@@ -73,11 +73,11 @@ static int		checktouch(char *block, int numpiece)
 
 	i = 0;
 	touchotherdieze = 0;
-
+	/*
 	ft_putstr("piece number");
 	ft_putnbr(numpiece);
 	ft_putchar('\n');
-
+	*/
 	// ON VERIFIE LE NOMBRE DE CATACTERES # QUI SE TOUCHENT:
 	while (block[i] != '\0')
 	{
