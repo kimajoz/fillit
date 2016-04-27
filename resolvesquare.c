@@ -182,11 +182,9 @@ int		resolvesquare( int ***all_tetriminos, int nombrepieces, char **map, int pie
 					ft_putnbr(piece);
 					ft_putchar('\n');
 					ft_removeblock(piece, &map, mapsize);
-					//x++;
 				}
 				else
 					return 1;
-					//return (resolvesquare(all_tetriminos, nombrepieces, map, piece + 1, mapsize));
 				x++;
 			}
 		}
@@ -206,11 +204,8 @@ int             resolve_smallest_square(int **all_tetriminos, int nombrepieces, 
     ft_showmap(map, mapsize);
 
 	//resolvesquare(&all_tetriminos, nombrepieces, map, n, mapsize);
-	while (resolvesquare(&all_tetriminos, nombrepieces, map, n, mapsize) != 1 && mapsize < 6)
+	while (resolvesquare(&all_tetriminos, nombrepieces, map, n, mapsize) != 1)
 	{
-			ft_putstr("tr :\n");
-			//ft_putnbr(mapsize);
-			//ft_putchar('\n');
 			map = increase_mapsize(map, mapsize++);
 	}
 	ft_putstr("fin tout ! \n");

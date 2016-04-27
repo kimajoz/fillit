@@ -28,45 +28,48 @@ static int		filter_file(char *my_block)
 	comptpoint = 0;
 	cartot = 0;
 
-	// PAS DE CARACTERE DIFFERENTS DE \n . et #
-	if (my_block[i] != '\n' && my_block[i] != '.' && my_block[i] != '#')
-		return(1);
+	//ft_putstr("filter_file\n");
 
-	if ((my_block[i] == '#' || my_block[i] == '.') && car < 4)
+	while (my_block[i] != '\0')
 	{
-		if (my_block[i] == '#')
-			comptdieze++;
-		if (my_block[i] == '.')
-			comptpoint++;
-		car++;
-	}
-	else if (my_block[i] == '\n' && car == 4)
-	{
-		car++;
-		ligne++;
-		cartot = car + cartot;
-		car = 0;
-	}
-	else if (my_block[i] == '\n' && car == 0)
-	{
-		if (ligne != 4 || comptdieze != 4 || comptpoint != 12)
-			return (1);
-		// je remet les compteurs a zero
-		cartot = 0;
-		car = 0;
-		ligne = 0;
-		comptdieze = 0;
-		comptpoint = 0;
-	}
-	else
-	{
-		ft_putstr("error wrong number of inbetween line");
-		return (1);
+		//ft_putchar(my_block[i]);
+		// PAS DE CARACTERE DIFFERENTS DE \n . et #
+		if (my_block[i] != '\n' && my_block[i] != '.' && my_block[i] != '#')
+			return(1);
+		if ((my_block[i] == '#' || my_block[i] == '.') && car < 4)
+		{
+			if (my_block[i] == '#')
+				comptdieze++;
+			if (my_block[i] == '.')
+				comptpoint++;
+			car++;
+		}
+		else if (my_block[i] == '\n' && car == 4)
+		{
+			car++;
+			ligne++;
+			cartot = car + cartot;
+			car = 0;
+		}
+		else if (my_block[i] == '\n' && car == 0)
+		{
+			if (ligne != 4 || comptdieze != 4 || comptpoint != 12)
+				return (1);
+			// je remet les compteurs a zero
+			cartot = 0;
+			car = 0;
+			ligne = 0;
+			comptdieze = 0;
+			comptpoint = 0;
+		}
+		else
+			return 1;
+		i++;
 	}
 	return (0);
 }
 
-static int		checktouch(char *block, int numpiece)
+static int		checktouch(char *block)
 {
 	int i;
 	int touchotherdieze;
@@ -118,12 +121,12 @@ static int		checktouch(char *block, int numpiece)
 	}
 	if (touchotherdieze != 6 && touchotherdieze != 8) //les carres des triominos se touche au moins 6 fois ou 8 pour le carre.
 	{
-		ft_putstr("error bad touch between #");
+		/*ft_putstr("error bad touch between #"); (avec int numpiece en 2eme parametre ;))
 		ft_putnbr(touchotherdieze);
 		ft_putchar('\n');
 		ft_putstr("piece number");
 		ft_putnbr(numpiece);
-		ft_putchar('\n');
+		ft_putchar('\n');*/
 		return (1);
 	}
 	return(0);
@@ -163,8 +166,8 @@ char	**checkfile(char *filecontent, int *blocknumb)
 	// Je filtre mon fichier
 	if (filter_file(filecontent) != 0)
 	{
-		ft_putstr("Bad filter_file\n");
-		return (NULL);
+		//ft_putstr("Bad filter_file\n");
+		return (0);
 	}
 
 	// Je compte le nombre de blocs:
@@ -187,7 +190,7 @@ char	**checkfile(char *filecontent, int *blocknumb)
 			return (NULL);
 		i++;
 	}
-	ft_putstr("malloc ok\n");
+	//ft_putstr("malloc ok\n");
 
 	// J'enregistre chaque bloc dans un tableau:
 	i = 0;
@@ -213,17 +216,17 @@ char	**checkfile(char *filecontent, int *blocknumb)
 		}
 		i++;
 	}
-	ft_putstr("bloc saved in tab ok\n");
+	//ft_putstr("bloc saved in tab ok\n");
 
 	// Je verifie que les blocks de tetriminos se touchent 
 	n = 0;
 	while (n < *blocknumb)
 	{
-		if (checktouch(all_block[n], n) != 0)
+		if (checktouch(all_block[n]) != 0)
 			return (NULL);
 		n++;
 	}
-	ft_putstr("check touch ok\n");
+	//ft_putstr("check touch ok\n");
 	
 	return (all_block);
 }
