@@ -15,15 +15,20 @@
 static int		*ft_addoffset_to_piece(int *piece, int offsetY, int offsetX)
 {
 	int i;
+	int *newpiece;
 
 	i = 0;
+	newpiece = malloc(8 * sizeof(int));// Malloc pour les 4 diezes (xy,xy,xy,xy,)
+	if (newpiece == NULL)
+		return (NULL);
+
 	while (i < 8)
 	{
-		piece[i] = piece[i] + offsetY; // On ajoute loffset en Y
-		piece[i + 1] = piece[i + 1] + offsetX; // Sinon en X
+		newpiece[i] = piece[i] + offsetY; // On ajoute loffset en Y
+		newpiece[i + 1] = piece[i + 1] + offsetX; // Sinon en X
 		i = i + 2;
 	}
-	return (piece);
+	return (newpiece);
 }
 
 static char		**ft_removeblock(int pieceasupprimer, char ***map, int mapsize)
@@ -54,14 +59,19 @@ static char		**ft_addblock(int *piece, int numeropiece, char ***map, int mapsize
 	int x;
 	int y;
 	int m;
+	int *newpiece;
 
+	ft_putlstnbr(piece, 8);
+	newpiece = malloc(8 * sizeof(int));// Malloc pour les 4 diezes (xy,xy,xy,xy,)
+	if (newpiece == NULL)
+		return (NULL);
 	i = 0;
 	j = 0;
 	m = 0;
-	if ((offsetX != 0) || (offsetY != 0)) // Si il y a un offset mettre a jour toutes les coordonnees
-		ft_addoffset_to_piece(piece, offsetY, offsetX);
-	y = piece[m++];
-	x = piece[m++];
+	// Si il y a un offset mettre a jour toutes les coordonnees
+	newpiece = ft_addoffset_to_piece(piece, offsetY, offsetX);
+	y = newpiece[m++];
+	x = newpiece[m++];
 	while (j < mapsize)
 	{
 		i = 0;
@@ -72,14 +82,15 @@ static char		**ft_addblock(int *piece, int numeropiece, char ***map, int mapsize
 				if (m <= 8) // J'affiche uniquement pour mes 8 coordonnees
 				{
 					(*map)[j][i] = 'A' + numeropiece; // On marque le caractere dieze dans la map
-					y = piece[m++];
-					x = piece[m++];
+					y = newpiece[m++];
+					x = newpiece[m++];
 				}
 			}
 			i++;
 		}
 		j++;
 	}
+	ft_showmap(*map, mapsize);
 	return (*map);
 }
 
@@ -116,17 +127,21 @@ static char		**increase_mapsize(char **map, int mapsize)
 	int m;
 
 	m = 0;
-	while (m < mapsize) // je supprime toute ma carte precedente
+	ft_putstr("function increase_mapsize\n");
+	while (m < (mapsize - 1)) // je supprime toute ma carte precedente
 	{
 		free(map[m]);
 		m++;
 	}
-	free(map);	
+	free(map);
+
+	ft_putstr("function increase_mapsize free ok\n");
 	m = 0;
+	mapsize++;
 	ft_putnbr(mapsize);
-	mapsize++; //J'incremente la taille de ma map
-	ft_createmap(mapsize);
-	ft_putnbr(mapsize);
+	map = ft_createmap(mapsize);
+	ft_showmap(map, mapsize);
+	ft_putstr("function increase_mapsize end\n");
 	return (map);
 }
 
@@ -143,39 +158,64 @@ int		resolvesquare( int ***all_tetriminos, int nombrepieces, char **map, int pie
 		while (x < mapsize)
 		{
 			if (ft_checkaddblock((*all_tetriminos)[piece], &map, mapsize, y, x) == 0) //la piece ne rentre pas
+			{
+				ft_putstr("t");
 				x++;
+			}
 			else
 			{
-				if (piece == nombrepieces)
-				{
-					ft_showmap(map, mapsize);
-					return (1);
-				}
+				ft_putstr("j'insere piece ");
+				ft_putnbr(piece);
+				ft_putchar('\n');
 				ft_addblock((*all_tetriminos)[piece], piece, &map, mapsize, y, x);
-				if (resolvesquare(all_tetriminos, nombrepieces, map, piece + 1, mapsize) == 0)	
+				if (piece == (nombrepieces - 1))
+				{
+					ft_putstr("fin resolve");
+					ft_showmap(map, mapsize);
+					return 1;
+					ft_putchar('a');
+					//break ;
+				}
+				if (resolvesquare(all_tetriminos, nombrepieces, map, piece + 1, mapsize) == 0)
+				{
+					ft_putstr("j'enleve piece ");
+					ft_putnbr(piece);
+					ft_putchar('\n');
 					ft_removeblock(piece, &map, mapsize);
+					//x++;
+				}
+				else
+					return 1;
+					//return (resolvesquare(all_tetriminos, nombrepieces, map, piece + 1, mapsize));
 				x++;
 			}
 		}
 		y++;
 	}
-	return(0);
+	ft_putstr("popo\n");
+	return (0);
 }
 
 int             resolve_smallest_square(int **all_tetriminos, int nombrepieces, int mapsize)
 {
-        int n;
-        char **map;
+	int n;
+	char **map;
 
-        n = 0;
-        map = ft_createmap(mapsize);
-        ft_showmap(map, mapsize);
-	while (1)
+	n = 0;
+    map = ft_createmap(mapsize);
+    ft_showmap(map, mapsize);
+
+	//resolvesquare(&all_tetriminos, nombrepieces, map, n, mapsize);
+	while (resolvesquare(&all_tetriminos, nombrepieces, map, n, mapsize) != 1 && mapsize < 6)
 	{
-		while(resolvesquare(&all_tetriminos, nombrepieces, map, n, mapsize) != 1)
-			increase_mapsize(map, mapsize);
+			ft_putstr("tr :\n");
+			//ft_putnbr(mapsize);
+			//ft_putchar('\n');
+			map = increase_mapsize(map, mapsize++);
 	}
-        return (0);
+	ft_putstr("fin tout ! \n");
+	ft_showmap(map, mapsize);
+	return (0);
 }
 
 /*

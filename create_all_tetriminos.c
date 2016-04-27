@@ -13,7 +13,7 @@
 #include "fillit.h"
 #include "libft.h"
 
-static int		*create_tetriminos(char *curblock, int numeropiece)
+static int		*create_tetriminos(char *curblock)
 {
 	int i;
 	int y;
@@ -43,12 +43,12 @@ static int		*create_tetriminos(char *curblock, int numeropiece)
 		}
 		i++;
 	}
-	// On ajoute réellement la piece dans la map.
-	ft_putstr(" piece ");
+	// On ajoute réellement la piece dans la map. // (Version ave numeropiece en second paramètre ;) (pour voir piece avant décalage en haut à droite))
+	/*ft_putstr(" piece ");
 	ft_putnbr(numeropiece);
 	ft_putstr(": ");
 	ft_putlstnbr(piece, 8);
-	ft_putstr("\n");
+	ft_putstr("\n");*/
 	return (piece); // Si toutes les pieces rentrent bien dans la map, j'insere la piece, et je sors
 }
 
@@ -111,10 +111,10 @@ int			**create_all_tetriminos(char **filecontent, int numberofpiece)
 		return (0);
 	ft_putstr("create_all_tetriminos\n");
 	n = 0;
-	ft_putstr("The list of my tetriminos blocks : (with y,x,y,x,y,x,y,x coordonnate) for each # carateres\n");
+	//ft_putstr("The list of my tetriminos blocks : (with y,x,y,x,y,x,y,x coordonnate) for each # carateres\n");
 	while (n < numberofpiece)
 	{
-		pieces[n] = create_tetriminos(filecontent[n], n);
+		pieces[n] = create_tetriminos(filecontent[n]);
 		n++;
 	}
 	remove_free_line(pieces, numberofpiece);

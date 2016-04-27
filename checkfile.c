@@ -178,9 +178,11 @@ char	**checkfile(char *filecontent, int *blocknumb)
 	
 	if (all_block == NULL)
 		return (NULL);
-	while (i <= *blocknumb)
+	while (i < *blocknumb)
 	{
-		all_block[i] = malloc(21);
+		//ft_putnbr(i);
+		//ft_putchar('\n');
+		all_block[i] = malloc(20);
 		if (all_block[i] == NULL)
 			return (NULL);
 		i++;
@@ -191,13 +193,22 @@ char	**checkfile(char *filecontent, int *blocknumb)
 	i = 0;
 	while (filecontent[i] != '\0')
 	{
+		/*ft_putnbr(n);
+		ft_putchar('\n');
+		ft_putnbr(a);
+		ft_putchar('\n');*/
 		all_block[n][a] = filecontent[i];
 		if (a < 20)
 			a++;
 		else
 		{
 			if ((filecontent[i] == '\n' && filecontent[i - 1] == '\n'))
+			{
+				/*ft_putstr("Block:");
+				ft_putnbr(n);
+				ft_putchar('\n');*/
 				n++;
+			}
 			a = 0;
 		}
 		i++;
