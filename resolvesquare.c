@@ -200,6 +200,7 @@ int             resolve_smallest_square(int **all_tetriminos, int nombrepieces, 
 	char **map;
 
 	n = 0;
+	ft_putnbr(mapsize);
     map = ft_createmap(mapsize);
     ft_showmap(map, mapsize);
 

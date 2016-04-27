@@ -12,6 +12,7 @@
 
 NAME = fillit
 SRC = main.c \
+		get_square_root.c \
 		openfile.c \
 		checkfile.c \
 		create_all_tetriminos.c \
