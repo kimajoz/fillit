@@ -20,6 +20,7 @@
 # define BUF_SIZE 527
 
 int	get_square_root(int nombrepieces);
+int     check_usage(int argc, char **argv, int nombrepieces);
 char	*openfile(char *filename);
 int	filter_file(char *my_block);
 char	**checkfile(char *filecontent, int *blocknumb);

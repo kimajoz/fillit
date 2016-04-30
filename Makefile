@@ -13,7 +13,9 @@
 NAME = fillit
 SRC = main.c \
 		get_square_root.c \
+		check_usage.c \
 		openfile.c \
+		filter_file.c \
 		checkfile.c \
 		create_all_tetriminos.c \
 		createshow_map.c \

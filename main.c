@@ -20,21 +20,14 @@ int		main(int argc, char **argv)
 	int sizemap;
 
 	nombrepieces = 0;
-	if (argc == 2)
+	if(check_usage(argc, argv, nombrepieces) == 1)
+		exit(1);
+	else // Si le fichier est verifie, je le resous
 	{
-		// Si le fichier est verifie, je le resous
 		tab_tot = checkfile(openfile(argv[1]), &nombrepieces);
-		if (tab_tot != NULL)
-		{
-			//ft_putstr("ok file open\n");
-			all_tetriminos = create_all_tetriminos(tab_tot, nombrepieces);
-			sizemap = get_square_root(nombrepieces);
-			resolve_smallest_square(all_tetriminos, nombrepieces, sizemap);
-		}
-		else
-			ft_putstr("error\n");
+		all_tetriminos = create_all_tetriminos(tab_tot, nombrepieces);
+		sizemap = get_square_root(nombrepieces);
+		resolve_smallest_square(all_tetriminos, nombrepieces, sizemap);
 	}
-	else
-		ft_putstr("usage: ./fillit input_file\n");
 	return (0);
 }

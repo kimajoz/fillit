@@ -20,27 +20,11 @@ char		*openfile(char* filename)
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
-	{
-		//ft_putstr("open failed\n");
-		return (NULL);
-	}
+		return (NULL);//ft_putstr("open failed\n");
 	buf = ft_memalloc(BUF_SIZE + 1);
-	// do something like show content
-	//ft_putstr("ok file open\n");
-	ret = read(fd, buf, BUF_SIZE);
+	ret = read(fd, buf, BUF_SIZE); //show content //ft_putstr("ok file open\n");
 	buf[ret] = '\0';
-	/*
-	ft_putnbr(ret);
-	ft_putchar('\n');
-	ft_putstr(buf);
-	ft_putstr("test");
-	*/
 	return (buf);
-
-	if (close(fd))
-	{
-		//ft_putstr("close() failed\n");
-		return (NULL);
-	}
-	//return (NULL);
+	if (close(fd))	
+		return (NULL);//ft_putstr("close() failed\n");
 }
