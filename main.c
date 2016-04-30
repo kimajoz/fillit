@@ -26,7 +26,7 @@ int		main(int argc, char **argv)
 		tab_tot = checkfile(openfile(argv[1]), &nombrepieces);
 		if (tab_tot != NULL)
 		{
-			ft_putstr("ok file open\n");
+			//ft_putstr("ok file open\n");
 			all_tetriminos = create_all_tetriminos(tab_tot, nombrepieces);
 			sizemap = get_square_root(nombrepieces);
 			resolve_smallest_square(all_tetriminos, nombrepieces, sizemap);

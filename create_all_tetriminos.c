@@ -34,21 +34,12 @@ static int		*create_tetriminos(char *curblock)
 		{
 				// On recupere sa position en x et y (on la deduit)
 				y = (i / 5); //Soit 1 ligne (et pas ligne 0)
-				//ft_putnbr(y);
 				x = (i  % 5); //Soit 2 (soit 3 pieces) pour une piece situé en case 8 
-				//ft_putnbr(x);
-				// Sinon je la stocke dans un tableau pour l'inserer +tard
-				piece[m++] = y;
+				piece[m++] = y; // Sinon je la stocke dans un tableau pour l'inserer +tard
 				piece[m++] = x;
 		}
 		i++;
 	}
-	// On ajoute réellement la piece dans la map. // (Version ave numeropiece en second paramètre ;) (pour voir piece avant décalage en haut à droite))
-	/*ft_putstr(" piece ");
-	ft_putnbr(numeropiece);
-	ft_putstr(": ");
-	ft_putlstnbr(piece, 8);
-	ft_putstr("\n");*/
 	return (piece); // Si toutes les pieces rentrent bien dans la map, j'insere la piece, et je sors
 }
 
@@ -77,7 +68,7 @@ static int			**remove_free_line(int **pieces, int numberofpiece)
 	}
 	return(pieces);
 }
-
+/*
 static void		show_tetriminos(int **pieces, int numberofpiece)
 {
 	int i;
@@ -95,8 +86,7 @@ static void		show_tetriminos(int **pieces, int numberofpiece)
 		i++;
 	}
 }
-
-
+*/
 int			**create_all_tetriminos(char **filecontent, int numberofpiece)
 {
 	int n;
@@ -109,7 +99,7 @@ int			**create_all_tetriminos(char **filecontent, int numberofpiece)
 	pieces = malloc(numberofpiece * sizeof(piece));
 	if (pieces == NULL)
 		return (0);
-	ft_putstr("create_all_tetriminos\n");
+	//ft_putstr("create_all_tetriminos\n");
 	n = 0;
 	//ft_putstr("The list of my tetriminos blocks : (with y,x,y,x,y,x,y,x coordonnate) for each # carateres\n");
 	while (n < numberofpiece)
@@ -118,6 +108,6 @@ int			**create_all_tetriminos(char **filecontent, int numberofpiece)
 		n++;
 	}
 	remove_free_line(pieces, numberofpiece);
-	show_tetriminos(pieces, numberofpiece);
+	//show_tetriminos(pieces, numberofpiece);
 	return (pieces);
 }

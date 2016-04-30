@@ -12,123 +12,30 @@
 
 #include "fillit.h"
 
-static int		filter_file(char *my_block)
-{
-	int comptdieze;
-	int comptpoint;
-	int ligne;
-	int car;
-	int cartot;
-	int i;
-
-	i = 0;
-	ligne = 0;
-	car = 0;
-	comptdieze = 0;
-	comptpoint = 0;
-	cartot = 0;
-
-	//ft_putstr("filter_file\n");
-
-	while (my_block[i] != '\0')
-	{
-		//ft_putchar(my_block[i]);
-		// PAS DE CARACTERE DIFFERENTS DE \n . et #
-		if (my_block[i] != '\n' && my_block[i] != '.' && my_block[i] != '#')
-			return(1);
-		if ((my_block[i] == '#' || my_block[i] == '.') && car < 4)
-		{
-			if (my_block[i] == '#')
-				comptdieze++;
-			if (my_block[i] == '.')
-				comptpoint++;
-			car++;
-		}
-		else if (my_block[i] == '\n' && car == 4)
-		{
-			car++;
-			ligne++;
-			cartot = car + cartot;
-			car = 0;
-		}
-		else if (my_block[i] == '\n' && car == 0)
-		{
-			if (ligne != 4 || comptdieze != 4 || comptpoint != 12)
-				return (1);
-			// je remet les compteurs a zero
-			cartot = 0;
-			car = 0;
-			ligne = 0;
-			comptdieze = 0;
-			comptpoint = 0;
-		}
-		else
-			return 1;
-		i++;
-	}
-	return (0);
-}
-
 static int		checktouch(char *block)
 {
 	int i;
 	int touchotherdieze;
-
+	
 	i = 0;
 	touchotherdieze = 0;
-	/*
-	ft_putstr("piece number");
-	ft_putnbr(numpiece);
-	ft_putchar('\n');
-	*/
-	// ON VERIFIE LE NOMBRE DE CATACTERES # QUI SE TOUCHENT:
 	while (block[i] != '\0')
 	{
-		//ft_putchar(block[i]);
-		//ft_putnbr(touchotherdieze);
 		if (block[i] == '#')
 		{
 			if ((block[i - 1] == '#') && (i > 0 && i < 19))
-			{
 				touchotherdieze++;
-				/*ft_putstr("touch before:");
-				ft_putnbr(touchotherdieze);
-				ft_putchar('\n');*/
-			}
 			if ((block[i + 1] == '#') && (i < 19))
-			{
 				touchotherdieze++;
-				/*ft_putstr("touch after:");
-				ft_putnbr(touchotherdieze);
-				ft_putchar('\n');*/
-			}
 			if ((block[i - 5] == '#') && (i > 4))
-			{
 				touchotherdieze++;
-				/*ft_putstr("touch line before:");
-				ft_putnbr(touchotherdieze);
-				ft_putchar('\n');*/
-			}
 			if ((block[i + 5] == '#') && (i < 15))
-			{
 				touchotherdieze++;
-				/*ft_putstr("touch line after:");
-				ft_putnbr(touchotherdieze);
-				ft_putchar('\n');*/
-			}
 		}
 		i++;
 	}
 	if (touchotherdieze != 6 && touchotherdieze != 8) //les carres des triominos se touche au moins 6 fois ou 8 pour le carre.
-	{
-		/*ft_putstr("error bad touch between #"); (avec int numpiece en 2eme parametre ;))
-		ft_putnbr(touchotherdieze);
-		ft_putchar('\n');
-		ft_putstr("piece number");
-		ft_putnbr(numpiece);
-		ft_putchar('\n');*/
 		return (1);
-	}
 	return(0);
 }
 
@@ -139,94 +46,75 @@ static int		ft_blocknumb(char *filecontent)
 
 	i = 0;
 	blocknumb = 0;
-	// Je compte le nombre de blocs:
 	while (filecontent[i] != '\0')
 	{
 		if ((filecontent[i] == '\n') && (filecontent[i + 1] == '\n' || filecontent[i + 1] == '\0')) // Attention d'etre logiaue et propre pour calculer le nombre de bloc !!! Un nbr de bloc mauvais peut forcement rendre tout le reste des scripts mauvais.
-			{
-				blocknumb++;
-			}
+			blocknumb++;
 		i++;
 	}
-	//ft_putendl("toto");
 	return (blocknumb);
 }
 
-char	**checkfile(char *filecontent, int *blocknumb)
-{
-	int i;
-	int a;
-	int n;
+static char	**createblocks(int **blocknumb)
+{	
 	char **all_block;
+	int i;
 
 	i = 0;
-	a = 0;
-	n = 0;
-
-	// Je filtre mon fichier
-	if (filter_file(filecontent) != 0)
-	{
-		//ft_putstr("Bad filter_file\n");
-		return (0);
-	}
-
-	// Je compte le nombre de blocs:
-	//ft_putnbr(ft_blocknumb(filecontent));
-	*blocknumb = ft_blocknumb(filecontent);
-
-	// Je fais mes mallocs:
-	i = 0;
-	//ft_putnbr(*blocknumb);
-	all_block = (char **)malloc(*blocknumb * sizeof(char*));
-	
+	all_block = (char **)malloc(**blocknumb * sizeof(char*));
 	if (all_block == NULL)
 		return (NULL);
-	while (i < *blocknumb)
+	while (i < **blocknumb)
 	{
-		//ft_putnbr(i);
-		//ft_putchar('\n');
 		all_block[i] = malloc(20);
 		if (all_block[i] == NULL)
 			return (NULL);
 		i++;
 	}
-	//ft_putstr("malloc ok\n");
+	return (all_block);
+}
 
-	// J'enregistre chaque bloc dans un tableau:
+static char	**fillblocks(char **all_block, char *filecontent)
+{
+	int i;
+	int a;
+	int n;
+
 	i = 0;
+	a = 0;
+	n = 0;
 	while (filecontent[i] != '\0')
 	{
-		/*ft_putnbr(n);
-		ft_putchar('\n');
-		ft_putnbr(a);
-		ft_putchar('\n');*/
 		all_block[n][a] = filecontent[i];
 		if (a < 20)
 			a++;
 		else
 		{
 			if ((filecontent[i] == '\n' && filecontent[i - 1] == '\n'))
-			{
-				/*ft_putstr("Block:");
-				ft_putnbr(n);
-				ft_putchar('\n');*/
 				n++;
-			}
 			a = 0;
 		}
 		i++;
 	}
-	//ft_putstr("bloc saved in tab ok\n");
+	return (all_block);
+}
 
-	// Je verifie que les blocks de tetriminos se touchent 
+char	**checkfile(char *filecontent, int *blocknumb)
+{
+	int n;
+	char **all_block;
+
 	n = 0;
+	if (filter_file(filecontent) != 0)
+		return (0);
+	*blocknumb = ft_blocknumb(filecontent);
+	all_block = createblocks(&blocknumb);
+	all_block = fillblocks(all_block, filecontent);
 	while (n < *blocknumb)
 	{
 		if (checktouch(all_block[n]) != 0)
 			return (NULL);
 		n++;
 	}
-	//ft_putstr("check touch ok\n");
-	
 	return (all_block);
 }
