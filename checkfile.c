@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 16:32:42 by pbillett          #+#    #+#             */
-/*   Updated: 2016/04/14 18:35:25 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/05/02 19:13:45 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static int		checktouch(char *block)
 {
-	int i;
-	int touchotherdieze;
-	
+	int			i;
+	int			touchotherdieze;
+
 	i = 0;
 	touchotherdieze = 0;
 	while (block[i] != '\0')
@@ -34,31 +34,32 @@ static int		checktouch(char *block)
 		}
 		i++;
 	}
-	if (touchotherdieze != 6 && touchotherdieze != 8) //les carres des triominos se touche au moins 6 fois ou 8 pour le carre.
+	if (touchotherdieze != 6 && touchotherdieze != 8)
 		return (1);
-	return(0);
+	return (0);
 }
 
 static int		ft_blocknumb(char *filecontent)
 {
-	int blocknumb;
-	int i;
+	int			blocknumb;
+	int			i;
 
 	i = 0;
 	blocknumb = 0;
 	while (filecontent[i] != '\0')
 	{
-		if ((filecontent[i] == '\n') && (filecontent[i + 1] == '\n' || filecontent[i + 1] == '\0')) // Attention d'etre logiaue et propre pour calculer le nombre de bloc !!! Un nbr de bloc mauvais peut forcement rendre tout le reste des scripts mauvais.
+		if ((filecontent[i] == '\n') && (filecontent[i + 1] == '\n' ||
+					filecontent[i + 1] == '\0'))
 			blocknumb++;
 		i++;
 	}
 	return (blocknumb);
 }
 
-static char	**createblocks(int **blocknumb)
-{	
-	char **all_block;
-	int i;
+static char		**createblocks(int **blocknumb)
+{
+	char		**all_block;
+	int			i;
 
 	i = 0;
 	all_block = (char **)malloc(**blocknumb * sizeof(char*));
@@ -74,11 +75,11 @@ static char	**createblocks(int **blocknumb)
 	return (all_block);
 }
 
-static char	**fillblocks(char **all_block, char *filecontent)
+static char		**fillblocks(char **all_block, char *filecontent)
 {
-	int i;
-	int a;
-	int n;
+	int			i;
+	int			a;
+	int			n;
 
 	i = 0;
 	a = 0;
@@ -99,10 +100,10 @@ static char	**fillblocks(char **all_block, char *filecontent)
 	return (all_block);
 }
 
-char	**checkfile(char *filecontent, int *blocknumb)
+char			**checkfile(char *filecontent, int *blocknumb)
 {
-	int n;
-	char **all_block;
+	int			n;
+	char		**all_block;
 
 	n = 0;
 	if (filter_file(filecontent) != 0)
