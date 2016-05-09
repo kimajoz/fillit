@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 17:44:57 by pbillett          #+#    #+#             */
-/*   Updated: 2016/05/02 19:45:41 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/05/09 15:50:20 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,94 +51,88 @@ static char		**ft_removeblock(int pieceasupprimer, char ***map, int mapsize)
 	return (*map);
 }
 
-static char		**ft_addblock(int *piece, int numeropiece,
-		char ***map, int mapsize, int offset_y, int offset_x)
+static char		**ft_addblock(int *piece, int n, t_map *map, t_pos pos)
 {
-	int			i;
-	int			j;
-	int			x;
-	int			y;
 	int			m;
+	t_pos		p;
+	t_pos		carte;
 
-	j = 0;
+	carte.y = 0;
 	m = 0;
-	piece = ft_addoffset_to_piece(piece, offset_y, offset_x);
-	y = piece[m++];
-	x = piece[m++];
-	while (j < mapsize)
+	piece = ft_addoffset_to_piece(piece, pos.y, pos.x);
+	p.y = piece[m++];
+	p.x = piece[m++];
+	while (carte.y < map->size)
 	{
-		i = 0;
-		while (i < mapsize)
+		carte.x = 0;
+		while (carte.x < map->size)
 		{
-			if (j == y && i == x && m <= 8)
+			if (carte.y == p.y && carte.x == p.x && m <= 8)
 			{
-				(*map)[j][i] = 'A' + numeropiece;
-				y = piece[m++];
-				x = piece[m++];
+				map->map[carte.y][carte.x] = 'A' + n;
+				p.y = piece[m++];
+				p.x = piece[m++];
 			}
-			i++;
+			carte.x++;
 		}
-		j++;
+		carte.y++;
 	}
-	return (*map);
+	return (map->map);
 }
 
-static int		ft_checkaddblock(int *piece, char ***map,
-		int mapsize, int offset_y, int offset_x)
+static int		ft_checkaddblock(int *piece, t_map map, int offset_y,
+		int offset_x)
 {
 	int			i;
 
 	i = 0;
 	while (i < 8)
 	{
-		if (((piece[i] + offset_y) >= mapsize) ||
-				((piece[i + 1] + offset_x) >= mapsize))
+		if (((piece[i] + offset_y) >= map.size) ||
+				((piece[i + 1] + offset_x) >= map.size))
 			return (0);
 		i = i + 2;
 	}
-	if ((*map)[(piece[0] + offset_y)][(piece[1] + offset_x)] == '#' ||
-	(*map)[(piece[2] + offset_y)][(piece[3] + offset_x)] == '#' ||
-	(*map)[(piece[4] + offset_y)][(piece[5] + offset_x)] == '#' ||
-	(*map)[(piece[6] + offset_y)][(piece[7] + offset_x)] == '#')
+	if ((map.map)[(piece[0] + offset_y)][(piece[1] + offset_x)] == '#' ||
+	(map.map)[(piece[2] + offset_y)][(piece[3] + offset_x)] == '#' ||
+	(map.map)[(piece[4] + offset_y)][(piece[5] + offset_x)] == '#' ||
+	(map.map)[(piece[6] + offset_y)][(piece[7] + offset_x)] == '#')
 		return (0);
-	if ((*map)[(piece[0] + offset_y)][(piece[1] + offset_x)] == '.' &&
-	(*map)[(piece[2] + offset_y)][(piece[3] + offset_x)] == '.' &&
-	(*map)[(piece[4] + offset_y)][(piece[5] + offset_x)] == '.' &&
-	(*map)[(piece[6] + offset_y)][(piece[7] + offset_x)] == '.')
+	if ((map.map)[(piece[0] + offset_y)][(piece[1] + offset_x)] == '.' &&
+	(map.map)[(piece[2] + offset_y)][(piece[3] + offset_x)] == '.' &&
+	(map.map)[(piece[4] + offset_y)][(piece[5] + offset_x)] == '.' &&
+	(map.map)[(piece[6] + offset_y)][(piece[7] + offset_x)] == '.')
 	{
 		return (1);
 	}
 	return (0);
 }
 
-int				resolvesquare(int ***all_tetriminos, int nombrepieces,
-		char **map, int piece, int mapsize)
+int				resolvesquare(int ***all_tetriminos, int totpieces,
+		int n, t_map *map)
 {
-	int			x;
-	int			y;
+	t_pos		pos;
 
-	y = 0;
-	while (y < mapsize)
+	pos.y = 0;
+	while (pos.y < map->size)
 	{
-		x = 0;
-		while (x < mapsize)
+		pos.x = 0;
+		while (pos.x < map->size)
 		{
-			if (ft_checkaddblock((*all_tetriminos)[piece], &map,
-						mapsize, y, x) == 1)
+			if (ft_checkaddblock((*all_tetriminos)[n], *map,
+						pos.y, pos.x) == 1)
 			{
-				ft_addblock((*all_tetriminos)[piece], piece,
-						&map, mapsize, y, x);
-				if (piece == (nombrepieces - 1))
+				ft_addblock((*all_tetriminos)[n], n, map, pos);
+				if (n == ((totpieces) - 1))
 					return (1);
-				if (resolvesquare(all_tetriminos, nombrepieces, map,
-							piece + 1, mapsize) == 0)
-					ft_removeblock(piece, &map, mapsize);
+				if (resolvesquare(all_tetriminos, totpieces, n + 1, map) == 0)
+					ft_removeblock(n, &map->map, map->size);
 				else
 					return (1);
 			}
-			x++;
+			pos.x++;
 		}
-		y++;
+		pos.y++;
 	}
 	return (0);
 }

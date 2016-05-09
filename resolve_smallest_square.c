@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/02 19:07:40 by pbillett          #+#    #+#             */
-/*   Updated: 2016/05/02 19:46:02 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/05/09 15:47:46 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,13 @@ int				resolve_smallest_square(int **all_tetriminos,
 		int nombrepieces, int mapsize)
 {
 	int			n;
-	char		**map;
+	t_map		map;
 
 	n = 0;
-	map = ft_createmap(mapsize);
-	while (resolvesquare(&all_tetriminos, nombrepieces, map, n, mapsize) != 1)
-		map = increase_mapsize(map, mapsize++);
-	ft_showmap(map, mapsize);
+	map.map = ft_createmap(mapsize);
+	map.size = mapsize;
+	while (resolvesquare(&all_tetriminos, nombrepieces, n, &map) != 1)
+		map.map = increase_mapsize(map.map, map.size++);
+	ft_showmap(map.map);
 	return (0);
 }

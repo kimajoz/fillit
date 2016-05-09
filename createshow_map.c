@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/02 18:42:01 by pbillett          #+#    #+#             */
-/*   Updated: 2016/05/02 18:46:48 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/05/09 12:17:47 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,21 @@ char		**ft_createmap(int mapsize)
 	return (map);
 }
 
-int			ft_showmap(char **map, int mapsize)
+int			ft_showmap(char **map)
 {
 	int		i;
 	int		j;
+	int		mapsize;
 
 	i = 0;
 	j = 0;
+	mapsize = 1;
 	while (j < mapsize)
 	{
-		while (i < mapsize)
+		while (map[j][i])
 			ft_putchar(map[j][i++]);
 		ft_putchar('\n');
+		mapsize = i;
 		i = 0;
 		j++;
 	}
