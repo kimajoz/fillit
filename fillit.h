@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 17:36:44 by pbillett          #+#    #+#             */
-/*   Updated: 2016/05/09 15:49:16 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/05/09 18:33:32 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 int		get_square_root(int nombrepieces);
 int		check_usage(int argc, char **argv, int nombrepieces);
 char	*openfile(char *filename);
-int		filter_file(char *my_block, int i, int car, int ligne);
+int		filter_file(char *my_block, int i);
 char	**checkfile(char *filecontent, int *blocknumb);
 int		**create_all_tetriminos(char **filecontent, int blocknumb);
 char	**ft_createmap(int mapsize);

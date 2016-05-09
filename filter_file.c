@@ -6,58 +6,61 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/02 18:48:10 by pbillett          #+#    #+#             */
-/*   Updated: 2016/05/09 11:27:48 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/05/09 19:08:26 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-static int	check_number_of_hash(int *car, int *comptdieze, int *comptpoint,
-		int *ligne)
-{
-	if (*ligne != 4 || *comptdieze != 4 || *comptpoint != 12)
-		return (1);
-	*car = -1;
-	*ligne = 0;
-	*comptdieze = 0;
-	*comptpoint = 0;
-	return (0);
-}
-
-static int	add_to_compter(char my_block_i, int *comptdieze, int *comptpoint,
-		int *ligne)
+static int		add_to_compter(char my_block_i, t_compt *c)
 {
 	if (my_block_i == '#')
-		(*comptdieze)++;
+		((*c).dieze)++;
 	if (my_block_i == '.')
-		(*comptpoint)++;
+		((*c).point)++;
 	if (my_block_i == '\n')
-		(*ligne)++;
+		((*c).ligne)++;
 	return (0);
 }
 
-int			filter_file(char *my_block, int i, int car, int ligne)
+static int		check_endline(char *b, int i, t_compt *c)
 {
-	int		comptdieze;
-	int		comptpoint;
-
-	comptdieze = 0;
-	comptpoint = 0;
-	while (my_block[i] != '\0')
+	if (b[i + 1] == '\0' || (b[i] == '\n' && b[i + 1] == '\n'))
 	{
-		if (my_block[i] != '\n' && my_block[i] != '.' && my_block[i] != '#')
+		if ((*c).ligne != 4 || (*c).dieze != 4 || (*c).point != 12)
 			return (1);
-		if (my_block[i + 1] == '\0' ||
-				(my_block[i] == '\n' && my_block[i - 1] == '\n'))
+		(*c).car = -1;
+		(*c).ligne = 0;
+		(*c).dieze = 0;
+		(*c).point = 0;
+	}
+	else
+		return (1);
+	return (0);
+}
+
+int				filter_file(char *b, int i)
+{
+	t_compt		c;
+
+	c.dieze = 0;
+	c.point = 0;
+	c.ligne = 1;
+	c.car = 0;
+	while (b[i] != '\0')
+	{
+		if (b[i] != '\n' && b[i] != '.' && b[i] != '#')
+			return (1);
+		if (c.car < 19)
 		{
-			if (check_number_of_hash(&car, &comptdieze, &comptpoint,
-						&ligne) == 1)
-				return (1);
+			c.car++;
+			add_to_compter(b[i], &c);
 		}
-		if (car < 19)
+		if (c.car == 19)
 		{
-			car++;
-			add_to_compter(my_block[i], &comptdieze, &comptpoint, &ligne);
+			i++;
+			if (check_endline(b, i, &c) == 1)
+				return (1);
 		}
 		i++;
 	}
