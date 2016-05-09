@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 16:32:42 by pbillett          #+#    #+#             */
-/*   Updated: 2016/05/02 19:13:45 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/05/09 11:22:48 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,10 +103,16 @@ static char		**fillblocks(char **all_block, char *filecontent)
 char			**checkfile(char *filecontent, int *blocknumb)
 {
 	int			n;
+	int			i;
+	int			car;
+	int			ligne;
 	char		**all_block;
 
 	n = 0;
-	if (filter_file(filecontent) != 0)
+	i = 0;
+	car = 0;
+	ligne = 1;
+	if (filter_file(filecontent, i, car, ligne) != 0)
 		return (0);
 	*blocknumb = ft_blocknumb(filecontent);
 	all_block = createblocks(&blocknumb);
