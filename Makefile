@@ -6,7 +6,7 @@
 #    By: pbillett <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/02/02 16:12:19 by pbillett          #+#    #+#              #
-#    Updated: 2016/05/09 20:35:55 by pbillett         ###   ########.fr        #
+#    Updated: 2016/05/10 14:09:29 by pbillett         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ FLAG = -Wall -Werror -Wextra
 all:	$(NAME)
 
 $(NAME):	$(SRC)
-	make -C libft
+	make -C libft/
 	gcc $(FLAG) -o $(NAME) $(SRC) $(LIB)
 
 clean:
