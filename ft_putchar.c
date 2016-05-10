@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_striteri.c                                      :+:      :+:    :+:   */
+/*   ft_putchar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/04 20:27:22 by pbillett          #+#    #+#             */
-/*   Updated: 2015/12/07 14:05:55 by pbillett         ###   ########.fr       */
+/*   Created: 2015/11/23 15:03:40 by pbillett          #+#    #+#             */
+/*   Updated: 2016/05/10 14:28:05 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	ft_striteri(char *s, void (*f)(unsigned int, char *))
-{
-	int i;
+#include "fillit.h"
 
-	i = 0;
-	while (s[i])
-	{
-		f((unsigned int)i, &s[i]);
-		i++;
-	}
+void		ft_putchar(char c)
+{
+	write(1, &c, 1);
 }

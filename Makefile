@@ -6,12 +6,16 @@
 #    By: pbillett <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/02/02 16:12:19 by pbillett          #+#    #+#              #
-#    Updated: 2016/05/10 14:09:29 by pbillett         ###   ########.fr        #
+#    Updated: 2016/05/10 14:37:27 by pbillett         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fillit
-SRC = main.c \
+SRC = ft_putchar.c \
+	  	ft_putstr.c \
+		ft_memalloc.c \
+		ft_bzero.c \
+		main.c \
 		get_square_root.c \
 		check_usage.c \
 		openfile.c \
@@ -21,14 +25,12 @@ SRC = main.c \
 		createshow_map.c \
 		resolvesquare.c \
 		resolve_smallest_square.c
-LIB = -L ./libft -lft
 FLAG = -Wall -Werror -Wextra
 
 all:	$(NAME)
 
 $(NAME):	$(SRC)
-	make -C libft/
-	gcc $(FLAG) -o $(NAME) $(SRC) $(LIB)
+	gcc $(FLAG) -o $(NAME) $(SRC)
 
 clean:
 	rm -rf $(NAME)

@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/30 12:37:37 by pbillett          #+#    #+#             */
-/*   Updated: 2016/01/05 19:54:19 by pbillett         ###   ########.fr       */
+/*   Created: 2015/11/27 18:00:41 by pbillett          #+#    #+#             */
+/*   Updated: 2016/05/10 14:37:12 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "fillit.h"
 
-char		*ft_strchr(const char *s, int c)
+void		ft_bzero(void *s, size_t n)
 {
-	int		i;
+	int i;
 
 	i = 0;
-	while (s[i])
+	while (i < (int)n)
 	{
-		if (s[i] == (char)c)
-			return (((char*)s + i));
+		((char*)s)[i] = 0;
 		i++;
 	}
-	if (s[i] == (char)c)
-		return (((char*)s + i));
-	return (NULL);
 }

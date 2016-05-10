@@ -1,22 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstiter.c                                       :+:      :+:    :+:   */
+/*   ft_memalloc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/08 14:21:41 by pbillett          #+#    #+#             */
-/*   Updated: 2016/01/09 20:53:52 by pbillett         ###   ########.fr       */
+/*   Created: 2015/12/04 09:57:17 by pbillett          #+#    #+#             */
+/*   Updated: 2016/05/10 14:32:42 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "fillit.h"
 
-void		ft_lstiter(t_list *lst, void (*f)(t_list *elem))
+void		*ft_memalloc(size_t size)
 {
-	while (lst)
-	{
-		f(lst);
-		lst = lst->next;
-	}
+	char *p;
+
+	p = (char*)malloc(size);
+	if (p == NULL)
+		return (NULL);
+	ft_bzero(p, size);
+	return (p);
 }

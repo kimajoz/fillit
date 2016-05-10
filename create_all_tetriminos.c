@@ -6,12 +6,11 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/02 10:22:34 by pbillett          #+#    #+#             */
-/*   Updated: 2016/05/02 19:07:11 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/05/10 14:33:19 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
-#include "libft.h"
 
 static int		*create_tetriminos(char *curblock)
 {
