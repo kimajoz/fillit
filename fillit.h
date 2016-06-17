@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 17:36:44 by pbillett          #+#    #+#             */
-/*   Updated: 2016/05/10 14:38:42 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/06/17 19:14:11 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <fcntl.h>
 # include <stdlib.h>
 
-# define BUF_SIZE 527
+# define BUF_SIZE 4096
 
 void	ft_putchar(char c);
 void	ft_putstr(char const *s);
