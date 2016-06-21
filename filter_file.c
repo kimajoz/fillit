@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/02 18:48:10 by pbillett          #+#    #+#             */
-/*   Updated: 2016/06/06 15:28:06 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/06/21 18:35:32 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,7 @@ int				filter_file(char *b, int i)
 		}
 		i++;
 	}
+	if ((c.car != -1) && (c.ligne != 0) && (c.dieze != 0) && (c.point != 0))
+		return (1);
 	return (0);
 }

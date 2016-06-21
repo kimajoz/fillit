@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/02 18:36:51 by pbillett          #+#    #+#             */
-/*   Updated: 2016/06/03 20:14:52 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/06/21 18:37:39 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	check_usage(int argc, char **argv, int nombrepieces)
 	{
 		if (openfile(argv[1]) == NULL)
 		{
-			ft_putstr("usage: ./fillit input_file\n");
+			ft_putstr("error\n");
 			return (1);
 		}
 		if (checkfile(openfile(argv[1]), &nombrepieces) != NULL)
