@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/02 17:36:44 by pbillett          #+#    #+#             */
-/*   Updated: 2016/06/21 18:38:23 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/06/22 15:20:22 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # define BUF_SIZE 546
 
 void	ft_putchar(char c);
+void	ft_putnbr(int n);
 void	ft_putstr(char const *s);
 void	ft_bzero(void *s, size_t n);
 void	*ft_memalloc(size_t size);

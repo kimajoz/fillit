@@ -6,12 +6,13 @@
 #    By: pbillett <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/02/02 16:12:19 by pbillett          #+#    #+#              #
-#    Updated: 2016/05/10 14:37:27 by pbillett         ###   ########.fr        #
+#    Updated: 2016/06/22 15:13:51 by pbillett         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fillit
 SRC = ft_putchar.c \
+	  	ft_putnbr.c \
 	  	ft_putstr.c \
 		ft_memalloc.c \
 		ft_bzero.c \
