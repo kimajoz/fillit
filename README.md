@@ -13,6 +13,8 @@ The goal is of course to find this smallest square as quickly as possible despit
       
 </code>
 
+<i>Ps: An example of file named extern_file.txt should also be found on the root of the repository for testing.</i>
+
 # How to create new file
 
 The executable must take a parameter (and only one) file describing the list of the tetriminos to arrange. 
@@ -29,8 +31,8 @@ The description of a Tetriminos should respect the rules below :
 or a ’.’ when the box is empty.
 - Each bloc of a Tetriminos should be in contact with at least an other bloc on one or the other of his 4 sides.
 
-- An example of file named extern_file.txt should also be found on the root of the repository for testing.
-- Here is an example of the valid tetriminos:</br>
+
+Here is an example of some valids tetriminos:</br>
 
 <TABLE BORDER="1">
   <TR> 
