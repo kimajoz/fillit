@@ -1,25 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr.c                                        :+:      :+:    :+:   */
+/*   ft_putnbr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/23 16:57:16 by pbillett          #+#    #+#             */
-/*   Updated: 2016/05/10 14:32:22 by pbillett         ###   ########.fr       */
+/*   Created: 2015/11/23 18:00:04 by pbillett          #+#    #+#             */
+/*   Updated: 2016/06/22 15:14:26 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fillit.h"
+#include "../includes/fillit.h"
 
-void		ft_putstr(char const *s)
+void		ft_putnbr(int n)
 {
-	int i;
+	unsigned int nb;
 
-	i = 0;
-	while (s[i] != '\0')
+	nb = n;
+	if (n < 0)
 	{
-		ft_putchar(s[i]);
-		i++;
+		ft_putchar('-');
+		nb = n * -1;
+	}
+	if (nb > 9)
+	{
+		ft_putnbr(nb / 10);
+		ft_putnbr(nb % 10);
+	}
+	else
+	{
+		ft_putchar(nb + '0');
 	}
 }

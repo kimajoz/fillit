@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fillit.h"
+#include "../includes/fillit.h"
 
 static int		*ft_addoffset_to_piece(int *piece, int offset_y, int offset_x)
 {

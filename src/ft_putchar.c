@@ -1,24 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memalloc.c                                      :+:      :+:    :+:   */
+/*   ft_putchar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/04 09:57:17 by pbillett          #+#    #+#             */
-/*   Updated: 2016/05/10 14:32:42 by pbillett         ###   ########.fr       */
+/*   Created: 2015/11/23 15:03:40 by pbillett          #+#    #+#             */
+/*   Updated: 2016/05/10 14:28:05 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fillit.h"
+#include "../includes/fillit.h"
 
-void		*ft_memalloc(size_t size)
+void		ft_putchar(char c)
 {
-	char *p;
-
-	p = (char*)malloc(size);
-	if (p == NULL)
-		return (NULL);
-	ft_bzero(p, size);
-	return (p);
+	write(1, &c, 1);
 }

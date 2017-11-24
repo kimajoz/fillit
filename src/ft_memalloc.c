@@ -1,38 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_usage.c                                      :+:      :+:    :+:   */
+/*   ft_memalloc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/05/02 18:36:51 by pbillett          #+#    #+#             */
-/*   Updated: 2016/06/21 18:37:39 by pbillett         ###   ########.fr       */
+/*   Created: 2015/12/04 09:57:17 by pbillett          #+#    #+#             */
+/*   Updated: 2016/05/10 14:32:42 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fillit.h"
+#include "../includes/fillit.h"
 
-int	check_usage(int argc, char **argv, int nombrepieces)
+void		*ft_memalloc(size_t size)
 {
-	if (argc == 2)
-	{
-		if (openfile(argv[1]) == NULL)
-		{
-			ft_putstr("error\n");
-			return (1);
-		}
-		if (checkfile(openfile(argv[1]), &nombrepieces) != NULL)
-			return (0);
-		else
-		{
-			ft_putstr("error\n");
-			return (1);
-		}
-	}
-	else
-	{
-		ft_putstr("usage: ./fillit input_file\n");
-		return (1);
-	}
-	return (0);
+	char *p;
+
+	p = (char*)malloc(size);
+	if (p == NULL)
+		return (NULL);
+	ft_bzero(p, size);
+	return (p);
 }

@@ -11,21 +11,21 @@
 # **************************************************************************** #
 
 NAME = fillit
-SRC = ft_putchar.c \
-	  	ft_putnbr.c \
-	  	ft_putstr.c \
-		ft_memalloc.c \
-		ft_bzero.c \
-		main.c \
-		get_square_root.c \
-		check_usage.c \
-		openfile.c \
-		filter_file.c \
-		checkfile.c \
-		create_all_tetriminos.c \
-		createshow_map.c \
-		resolvesquare.c \
-		resolve_smallest_square.c
+SRC =	src/ft_putchar.c \
+		src/ft_putnbr.c \
+		src/ft_putstr.c \
+		src/ft_memalloc.c \
+		src/ft_bzero.c \
+		src/main.c \
+		src/get_square_root.c \
+		src/check_usage.c \
+		src/openfile.c \
+		src/filter_file.c \
+		src/checkfile.c \
+		src/create_all_tetriminos.c \
+		src/createshow_map.c \
+		src/resolvesquare.c \
+		src/resolve_smallest_square.c
 FLAG = -Wall -Werror -Wextra
 
 all:	$(NAME)

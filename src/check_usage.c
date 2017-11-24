@@ -1,25 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   check_usage.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/27 18:00:41 by pbillett          #+#    #+#             */
-/*   Updated: 2016/05/10 14:37:12 by pbillett         ###   ########.fr       */
+/*   Created: 2016/05/02 18:36:51 by pbillett          #+#    #+#             */
+/*   Updated: 2016/06/21 18:37:39 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fillit.h"
+#include "../includes/fillit.h"
 
-void		ft_bzero(void *s, size_t n)
+int	check_usage(int argc, char **argv, int nombrepieces)
 {
-	int i;
-
-	i = 0;
-	while (i < (int)n)
+	if (argc == 2)
 	{
-		((char*)s)[i] = 0;
-		i++;
+		if (openfile(argv[1]) == NULL)
+		{
+			ft_putstr("error\n");
+			return (1);
+		}
+		if (checkfile(openfile(argv[1]), &nombrepieces) != NULL)
+			return (0);
+		else
+		{
+			ft_putstr("error\n");
+			return (1);
+		}
 	}
+	else
+	{
+		ft_putstr("usage: ./fillit input_file\n");
+		return (1);
+	}
+	return (0);
 }

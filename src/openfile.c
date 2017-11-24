@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr.c                                        :+:      :+:    :+:   */
+/*   checkfile.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/23 18:00:04 by pbillett          #+#    #+#             */
-/*   Updated: 2016/06/22 15:14:26 by pbillett         ###   ########.fr       */
+/*   Created: 2016/02/02 16:32:42 by pbillett          #+#    #+#             */
+/*   Updated: 2016/06/22 15:24:34 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fillit.h"
+#include "../includes/fillit.h"
 
-void		ft_putnbr(int n)
+char		*openfile(char *filename)
 {
-	unsigned int nb;
+	int		fd;
+	int		ret;
+	char	*buf;
 
-	nb = n;
-	if (n < 0)
-	{
-		ft_putchar('-');
-		nb = n * -1;
-	}
-	if (nb > 9)
-	{
-		ft_putnbr(nb / 10);
-		ft_putnbr(nb % 10);
-	}
-	else
-	{
-		ft_putchar(nb + '0');
-	}
+	fd = open(filename, O_RDONLY);
+	if (fd == -1)
+		return (NULL);
+	buf = ft_memalloc(BUF_SIZE + 1);
+	ret = read(fd, buf, BUF_SIZE);
+	if (buf[ret] != '\0')
+		return (NULL);
+	buf[ret] = '\0';
+	return (buf);
+	if (close(fd))
+		return (NULL);
 }

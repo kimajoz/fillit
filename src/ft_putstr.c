@@ -1,18 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar.c                                       :+:      :+:    :+:   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/23 15:03:40 by pbillett          #+#    #+#             */
-/*   Updated: 2016/05/10 14:28:05 by pbillett         ###   ########.fr       */
+/*   Created: 2015/11/23 16:57:16 by pbillett          #+#    #+#             */
+/*   Updated: 2016/05/10 14:32:22 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fillit.h"
+#include "../includes/fillit.h"
 
-void		ft_putchar(char c)
+void		ft_putstr(char const *s)
 {
-	write(1, &c, 1);
+	int i;
+
+	i = 0;
+	while (s[i] != '\0')
+	{
+		ft_putchar(s[i]);
+		i++;
+	}
 }

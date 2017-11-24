@@ -1,30 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_square_root.c                                  :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/05/02 18:47:19 by pbillett          #+#    #+#             */
-/*   Updated: 2016/05/02 18:47:36 by pbillett         ###   ########.fr       */
+/*   Created: 2015/11/27 18:00:41 by pbillett          #+#    #+#             */
+/*   Updated: 2016/05/10 14:37:12 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fillit.h"
+#include "../includes/fillit.h"
 
-int			get_square_root(int nombrepieces)
+void		ft_bzero(void *s, size_t n)
 {
-	int		total;
-	int		square_root;
-	int		i;
+	int i;
 
-	total = 4 * nombrepieces;
-	square_root = 0;
 	i = 0;
-	while (square_root < total)
+	while (i < (int)n)
 	{
+		((char*)s)[i] = 0;
 		i++;
-		square_root = i * i;
 	}
-	return (i);
 }

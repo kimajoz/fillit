@@ -1,3 +1,6 @@
+![Alt text](img/fillit_scrot_01.png?raw=true "Fillit")
+![Alt text](img/fillit_scrot_02.png?raw=true "Fillit")
+
 # fillit
 Fillit is a program that take in parameter a file that describe a list of Tetriminos that he will then arrange them to form the smallest possible square.
 
